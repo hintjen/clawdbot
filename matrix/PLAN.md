@@ -546,8 +546,78 @@ matrix-js-sdk supports E2EE but requires:
 - [ ] Auto-join rooms on invite from allowed users?
 - [ ] Handle room upgrades (tombstone → new room)?
 - [ ] Support spaces (room hierarchies)?
-- [ ] Typing indicators (`m.typing`)?
+- [x] Typing indicators (`m.typing`) - Added in Step 18
 
 ---
 
 *Created 2026-01-14 | Updated 2026-01-14*
+
+---
+
+## Step 18: Typing Indicators (P1)
+
+**File:** `src/matrix/typing.ts`
+
+```typescript
+import type { MatrixClient } from "matrix-js-sdk";
+import { logVerbose } from "../globals.js";
+
+/**
+ * Send typing indicator to a Matrix room.
+ * Call when bot starts processing a message.
+ */
+export async function sendMatrixTyping(params: {
+  client: MatrixClient;
+  roomId: string;
+  typing?: boolean;
+  timeoutMs?: number;
+}): Promise<void> {
+  const { client, roomId, typing = true, timeoutMs = 30000 } = params;
+  try {
+    await client.sendTyping(roomId, typing, timeoutMs);
+  } catch (err) {
+    logVerbose(`matrix typing indicator failed for room ${roomId}: ${String(err)}`);
+  }
+}
+
+/**
+ * Stop typing indicator (call after response sent).
+ */
+export async function stopMatrixTyping(params: {
+  client: MatrixClient;
+  roomId: string;
+}): Promise<void> {
+  await sendMatrixTyping({ ...params, typing: false });
+}
+```
+
+**Integration points:**
+
+1. **Message handler** — call `sendMatrixTyping()` when message received, before processing
+2. **Send response** — call `stopMatrixTyping()` after message sent
+3. **Monitor context** — store typing state to avoid duplicate calls
+
+**File:** `src/matrix/monitor/events/typing.ts`
+
+```typescript
+/**
+ * Handle incoming m.typing events (optional).
+ * Could be used to show "User is typing..." in logs.
+ */
+export function handleMatrixTypingEvent(event: any, context: MatrixMonitorContext) {
+  // Optional: log typing users for debugging
+  const typingUsers = event.getContent()?.user_ids ?? [];
+  if (typingUsers.length > 0) {
+    logVerbose(`matrix: typing in ${event.getRoomId()}: ${typingUsers.join(", ")}`);
+  }
+}
+```
+
+**Update file checklist:**
+- [ ] `src/matrix/typing.ts` — send/stop typing functions
+- [ ] `src/matrix/monitor/events/typing.ts` — receive typing events (optional)
+
+**Update index.ts exports:**
+```typescript
+export { sendMatrixTyping, stopMatrixTyping } from "./typing.js";
+```
