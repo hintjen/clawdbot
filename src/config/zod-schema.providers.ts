@@ -3,6 +3,7 @@ import { z } from "zod";
 import {
   DiscordConfigSchema,
   IMessageConfigSchema,
+  MatrixConfigSchema,
   MSTeamsConfigSchema,
   SignalConfigSchema,
   SlackConfigSchema,
@@ -22,5 +23,6 @@ export const ChannelsSchema = z
     signal: SignalConfigSchema.optional(),
     imessage: IMessageConfigSchema.optional(),
     msteams: MSTeamsConfigSchema.optional(),
+    matrix: MatrixConfigSchema.optional(),
   })
   .optional();

@@ -36,8 +36,8 @@
   - Limits: textChunkLimit, mediaMaxMb
 
 ### P0.5: Config Schema - Top-level
-- [ ] Create MatrixConfigSchema extending MatrixAccountSchema with accounts record
-- [ ] Import and add matrix to ChannelsSchema in `src/config/zod-schema.providers.ts`
+- [x] Create MatrixConfigSchema extending MatrixAccountSchema with accounts record
+- [x] Import and add matrix to ChannelsSchema in `src/config/zod-schema.providers.ts`
 
 ---
 
@@ -326,7 +326,7 @@
 - [x] `package.json` - add matrix-js-sdk
 - [x] `src/channels/registry.ts` - add "matrix" to order + meta
 - [x] `src/config/zod-schema.providers-core.ts` - add Matrix schemas (MatrixRoomSchema, MatrixDmSchema, MatrixAccountSchema, MatrixConfigSchema)
-- [ ] `src/config/zod-schema.providers.ts` - add matrix to ChannelsSchema
+- [x] `src/config/zod-schema.providers.ts` - add matrix to ChannelsSchema
 - [ ] `src/channels/plugins/index.ts` - register matrix plugin
 
 ---
@@ -338,6 +338,7 @@
 - [x] P0.2: Channel Registry - add "matrix" to CHAT_CHANNEL_ORDER, CHAT_CHANNEL_META, CHAT_CHANNEL_ALIASES
 - [x] P0.3: Create MatrixRoomSchema and MatrixDmSchema in `src/config/zod-schema.providers-core.ts`
 - [x] P0.4: Create MatrixAccountSchema and MatrixConfigSchema in `src/config/zod-schema.providers-core.ts`
+- [x] P0.5: Import MatrixConfigSchema and add matrix to ChannelsSchema in `src/config/zod-schema.providers.ts`
 
 ---
 
