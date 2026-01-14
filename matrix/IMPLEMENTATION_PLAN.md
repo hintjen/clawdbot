@@ -71,10 +71,12 @@
   - Handle reconnection on network errors
 
 ### P1.5: Message Formatting
-- [ ] Create `src/matrix/format.ts` with:
+- [x] Create `src/matrix/format.ts` with:
   - markdownToMatrixHtml(md) - convert markdown to Matrix HTML
   - matrixHtmlToPlaintext(html) - strip HTML for plain body
   - formatMatrixReply(originalEvent, newBody) - format reply with quote
+  - extractMatrixMentions(body) - extract @user:server mentions
+  - containsMatrixMention(body, userId) - check for specific mention
 
 ### P1.6: Typing Indicators
 - [ ] Create `src/matrix/typing.ts` with:
@@ -298,7 +300,7 @@
 - [x] `src/matrix/accounts.ts`
 - [ ] `src/matrix/actions.ts`
 - [x] `src/matrix/client.ts`
-- [ ] `src/matrix/format.ts`
+- [x] `src/matrix/format.ts`
 - [ ] `src/matrix/probe.ts`
 - [ ] `src/matrix/send.ts`
 - [x] `src/matrix/token.ts`
@@ -345,6 +347,7 @@
 - [x] Create `src/config/types.matrix.ts` with MatrixAccountConfig, MatrixDmConfig, MatrixRoomConfig, MatrixActionConfig types
 - [x] Add types.matrix.js export to `src/config/types.ts`
 - [x] P1.4: Create `src/matrix/client.ts` with createMatrixClient(), loginMatrix(), startMatrixSync(), stopMatrixClient(), waitForMatrixClientStop(), getMatrixSyncState(), isMatrixClientSyncing()
+- [x] P1.5: Create `src/matrix/format.ts` with markdownToMatrixHtml(), matrixHtmlToPlaintext(), formatMatrixReply(), extractMatrixMentions(), containsMatrixMention()
 
 ---
 
