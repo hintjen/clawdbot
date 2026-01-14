@@ -6,11 +6,11 @@
  * registration of individual event types (messages, reactions, members, rooms).
  */
 
-import { RoomStateEvent } from "matrix-js-sdk";
 import type { MatrixMonitorContext } from "../context.js";
 import { registerMatrixMemberEvents } from "./members.js";
 import { registerMatrixMessageEvents } from "./messages.js";
 import { registerMatrixReactionEvents } from "./reactions.js";
+import { registerMatrixRoomEvents } from "./rooms.js";
 import type { MatrixMessageHandler } from "./types.js";
 
 // Re-export types for convenience
@@ -47,39 +47,7 @@ export function registerMatrixEvents(params: RegisterMatrixEventsParams): void {
   registerMatrixMessageEvents({ ctx, handleMatrixMessage });
   registerMatrixReactionEvents({ ctx });
   registerMatrixMemberEvents({ ctx });
-  registerRoomEvents({ ctx });
+  registerMatrixRoomEvents({ ctx });
 
   ctx.logger.debug("matrix event handlers registered");
-}
-
-
-/**
- * Register room event handlers.
- * Handles room state events (invites, upgrades, etc.).
- */
-function registerRoomEvents(params: { ctx: MatrixMonitorContext }): void {
-  const { ctx } = params;
-
-  ctx.client.on(RoomStateEvent.Events, (event, state) => {
-    try {
-      const eventType = event.getType();
-      const roomId = state?.roomId;
-
-      if (!roomId) return;
-
-      // Handle room tombstones (room upgrades)
-      if (eventType === "m.room.tombstone") {
-        const content = event.getContent();
-        const replacementRoom = content.replacement_room as string | undefined;
-        ctx.logger.info(
-          `room ${roomId} tombstoned, replacement: ${replacementRoom ?? "none"}`,
-        );
-        // Could auto-join replacement room here
-      }
-    } catch (err) {
-      ctx.runtime.error?.(`matrix room handler error: ${String(err)}`);
-    }
-  });
-
-  ctx.logger.debug("matrix room events registered");
 }
