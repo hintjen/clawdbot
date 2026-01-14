@@ -19,9 +19,9 @@
 - [x] Add `matrix-js-sdk` to package.json dependencies (`pnpm add matrix-js-sdk`)
 
 ### P0.2: Channel Registry
-- [ ] Add `"matrix"` to CHAT_CHANNEL_ORDER in `src/channels/registry.ts`
-- [ ] Add Matrix entry to CHAT_CHANNEL_META in `src/channels/registry.ts`
-- [ ] Add `"element": "matrix"` alias to CHAT_CHANNEL_ALIASES (optional)
+- [x] Add `"matrix"` to CHAT_CHANNEL_ORDER in `src/channels/registry.ts`
+- [x] Add Matrix entry to CHAT_CHANNEL_META in `src/channels/registry.ts`
+- [x] Add `"element": "matrix"` alias to CHAT_CHANNEL_ALIASES (optional)
 
 ### P0.3: Config Schema - Room/DM Schemas
 - [ ] Create MatrixRoomSchema in `src/config/zod-schema.providers-core.ts`
@@ -324,7 +324,7 @@
 
 ### Modified Files (5 files)
 - [x] `package.json` - add matrix-js-sdk
-- [ ] `src/channels/registry.ts` - add "matrix" to order + meta
+- [x] `src/channels/registry.ts` - add "matrix" to order + meta
 - [ ] `src/config/zod-schema.providers-core.ts` - add Matrix schemas
 - [ ] `src/config/zod-schema.providers.ts` - add matrix to ChannelsSchema
 - [ ] `src/channels/plugins/index.ts` - register matrix plugin
@@ -335,6 +335,7 @@
 
 - [x] P0.1: Add `matrix-js-sdk` to package.json dependencies (^34.0.0)
 - [x] Add `dist/matrix/**` to package.json files array
+- [x] P0.2: Channel Registry - add "matrix" to CHAT_CHANNEL_ORDER, CHAT_CHANNEL_META, CHAT_CHANNEL_ALIASES
 
 ---
 

@@ -8,6 +8,7 @@ export const CHAT_CHANNEL_ORDER = [
   "signal",
   "imessage",
   "msteams",
+  "matrix",
 ] as const;
 
 export type ChatChannelId = (typeof CHAT_CHANNEL_ORDER)[number];
@@ -94,11 +95,20 @@ const CHAT_CHANNEL_META: Record<ChatChannelId, ChatChannelMeta> = {
     docsLabel: "msteams",
     blurb: "supported (Bot Framework).",
   },
+  matrix: {
+    id: "matrix",
+    label: "Matrix",
+    selectionLabel: "Matrix (matrix-js-sdk)",
+    docsPath: "/channels/matrix",
+    docsLabel: "matrix",
+    blurb: "federated, E2EE-capable chat protocol (Element, etc.).",
+  },
 };
 
 export const CHAT_CHANNEL_ALIASES: Record<string, ChatChannelId> = {
   imsg: "imessage",
   teams: "msteams",
+  element: "matrix",
 };
 
 const normalizeChannelKey = (raw?: string | null): string | undefined => {
