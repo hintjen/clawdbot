@@ -274,8 +274,8 @@
   - Troubleshooting
 
 ### P2.6: Onboarding Adapter
-- [ ] Create `src/channels/plugins/onboarding/matrix.ts` with matrixOnboardingAdapter
-- [ ] Add Matrix option to onboarding wizard
+- [x] Create `src/channels/plugins/onboarding/matrix.ts` with matrixOnboardingAdapter
+- [x] Add Matrix option to onboarding wizard
 
 ### P2.7: Outbound Plugin
 - [x] Create `src/channels/plugins/outbound/matrix.ts` for CLI send support
@@ -324,7 +324,7 @@
 - [x] `src/matrix/monitor/message-handler/preflight.ts`
 - [x] `src/matrix/monitor/message-handler/process.ts`
 - [x] `src/channels/plugins/matrix.ts`
-- [ ] `src/channels/plugins/onboarding/matrix.ts`
+- [x] `src/channels/plugins/onboarding/matrix.ts`
 - [x] `src/channels/plugins/outbound/matrix.ts`
 - [x] `docs/channels/matrix.md`
 
@@ -392,6 +392,7 @@
 - [x] P2.3: Create `src/matrix/monitor/message-handler.test.ts` with unit tests for createMatrixMessageHandler, preflightMatrixMessage (bot self-filtering, duplicate detection, DM policy, room policy, mention requirement, empty message filtering, history entries, command authorization, agent route resolution) (38 tests).
 - [x] P2.4: Create `src/matrix/monitor.test.ts` with integration tests for monitorMatrixProvider - startup/initialization, error handling (disabled account, missing homeserver/userId/credentials, login failure, sync failure), configuration options (accountId, config override, accessToken/password override, abortSignal, custom runtime), event handler registration (Room.timeline, RoomMember.membership, RoomMember.typing, RoomState.events), policy configuration (disabled DM, allowlist group policy, disabled group policy), provider lifecycle (abort signal, log messages) (27 tests).
 - [x] P2.5: Create `docs/channels/matrix.md` with overview, quick setup, config reference, troubleshooting, capabilities and limits, reply tags, delivery targets, and E2EE notes. Updated docs/channels/index.md and docs/docs.json navigation.
+- [x] P2.6: Create `src/channels/plugins/onboarding/matrix.ts` with matrixOnboardingAdapter - handles Matrix credential configuration via wizard (homeserver, userId, accessToken/password), DM policy setting, env var detection (MATRIX_ACCESS_TOKEN, MATRIX_PASSWORD), multi-account support. Added onboarding property to matrixPlugin in plugins/matrix.ts.
 
 ---
 

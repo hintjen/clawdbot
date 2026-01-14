@@ -24,6 +24,7 @@ import {
 } from "./config-helpers.js";
 import { formatPairingApproveHint } from "./helpers.js";
 import { normalizeMatrixMessagingTarget } from "./normalize-target.js";
+import { matrixOnboardingAdapter } from "./onboarding/matrix.js";
 import {
   applyAccountNameToChannelSection,
   migrateBaseNameToDefaultAccount,
@@ -84,6 +85,7 @@ export const matrixPlugin: ChannelPlugin<ResolvedMatrixAccount> = {
     blockStreamingCoalesceDefaults: { minChars: 1500, idleMs: 1000 },
   },
   reload: { configPrefixes: ["channels.matrix"] },
+  onboarding: matrixOnboardingAdapter,
   config: {
     listAccountIds: (cfg) => listMatrixAccountIds(cfg),
     resolveAccount: (cfg, accountId) =>
