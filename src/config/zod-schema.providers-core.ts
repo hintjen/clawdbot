@@ -366,6 +366,33 @@ export const IMessageConfigSchema = IMessageAccountSchemaBase.extend({
   });
 });
 
+// Matrix schemas
+export const MatrixRoomSchema = z.object({
+  enabled: z.boolean().optional(),
+  allow: z.boolean().optional(),
+  requireMention: z.boolean().optional(),
+  users: z.array(z.string()).optional(),
+  skills: z.array(z.string()).optional(),
+  systemPrompt: z.string().optional(),
+});
+
+export const MatrixDmSchema = z
+  .object({
+    enabled: z.boolean().optional(),
+    policy: DmPolicySchema.optional().default("pairing"),
+    allowFrom: z.array(z.string()).optional(),
+  })
+  .superRefine((value, ctx) => {
+    requireOpenAllowFrom({
+      policy: value.policy,
+      allowFrom: value.allowFrom,
+      ctx,
+      path: ["allowFrom"],
+      message:
+        'channels.matrix.dm.policy="open" requires channels.matrix.dm.allowFrom to include "*"',
+    });
+  });
+
 export const MSTeamsChannelSchema = z.object({
   requireMention: z.boolean().optional(),
   replyStyle: MSTeamsReplyStyleSchema.optional(),

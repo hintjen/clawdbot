@@ -24,8 +24,8 @@
 - [x] Add `"element": "matrix"` alias to CHAT_CHANNEL_ALIASES (optional)
 
 ### P0.3: Config Schema - Room/DM Schemas
-- [ ] Create MatrixRoomSchema in `src/config/zod-schema.providers-core.ts`
-- [ ] Create MatrixDmSchema in `src/config/zod-schema.providers-core.ts` (with superRefine for open policy)
+- [x] Create MatrixRoomSchema in `src/config/zod-schema.providers-core.ts`
+- [x] Create MatrixDmSchema in `src/config/zod-schema.providers-core.ts` (with superRefine for open policy)
 
 ### P0.4: Config Schema - Account Schema
 - [ ] Create MatrixAccountSchema in `src/config/zod-schema.providers-core.ts`
@@ -336,6 +336,7 @@
 - [x] P0.1: Add `matrix-js-sdk` to package.json dependencies (^34.0.0)
 - [x] Add `dist/matrix/**` to package.json files array
 - [x] P0.2: Channel Registry - add "matrix" to CHAT_CHANNEL_ORDER, CHAT_CHANNEL_META, CHAT_CHANNEL_ALIASES
+- [x] P0.3: Create MatrixRoomSchema and MatrixDmSchema in `src/config/zod-schema.providers-core.ts`
 
 ---
 
