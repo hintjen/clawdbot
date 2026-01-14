@@ -285,6 +285,49 @@ export const matrixPlugin: ChannelPlugin<ResolvedMatrixAccount> = {
       lastStopAt: null,
       lastError: null,
     },
+    collectStatusIssues: (accounts) =>
+      accounts.flatMap((account) => {
+        const issues: Array<{
+          channel: "matrix";
+          accountId: string;
+          kind: "runtime" | "config";
+          message: string;
+          fix?: string;
+        }> = [];
+        const accountId =
+          typeof account.accountId === "string"
+            ? account.accountId
+            : DEFAULT_ACCOUNT_ID;
+
+        // Check for runtime errors
+        const lastError =
+          typeof account.lastError === "string" ? account.lastError.trim() : "";
+        if (lastError) {
+          issues.push({
+            channel: "matrix",
+            accountId,
+            kind: "runtime",
+            message: `Channel error: ${lastError}`,
+            fix: "Check homeserver connectivity, credentials, and Matrix server status.",
+          });
+        }
+
+        // Check for probe failures
+        const probe = account.probe as
+          | { ok?: boolean; error?: string }
+          | undefined;
+        if (probe && probe.ok === false && probe.error) {
+          issues.push({
+            channel: "matrix",
+            accountId,
+            kind: "runtime",
+            message: `Probe failed: ${probe.error}`,
+            fix: "Verify homeserver URL, access token, and network connectivity.",
+          });
+        }
+
+        return issues;
+      }),
     buildChannelSummary: ({ snapshot }) => ({
       configured: snapshot.configured ?? false,
       tokenSource: snapshot.tokenSource ?? "none",
