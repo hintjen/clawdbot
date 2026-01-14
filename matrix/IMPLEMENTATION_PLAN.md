@@ -16,7 +16,7 @@
 ## P0: Foundation (Dependencies & Config)
 
 ### P0.1: Package Dependencies
-- [ ] Add `matrix-js-sdk` to package.json dependencies (`pnpm add matrix-js-sdk`)
+- [x] Add `matrix-js-sdk` to package.json dependencies (`pnpm add matrix-js-sdk`)
 
 ### P0.2: Channel Registry
 - [ ] Add `"matrix"` to CHAT_CHANNEL_ORDER in `src/channels/registry.ts`
@@ -323,7 +323,7 @@
 - [ ] `docs/channels/matrix.md`
 
 ### Modified Files (5 files)
-- [ ] `package.json` - add matrix-js-sdk
+- [x] `package.json` - add matrix-js-sdk
 - [ ] `src/channels/registry.ts` - add "matrix" to order + meta
 - [ ] `src/config/zod-schema.providers-core.ts` - add Matrix schemas
 - [ ] `src/config/zod-schema.providers.ts` - add matrix to ChannelsSchema
@@ -333,7 +333,8 @@
 
 ## Completed Tasks
 
-(None yet)
+- [x] P0.1: Add `matrix-js-sdk` to package.json dependencies (^34.0.0)
+- [x] Add `dist/matrix/**` to package.json files array
 
 ---
 
