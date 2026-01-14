@@ -171,7 +171,7 @@
   - Emit reaction notifications if enabled
 
 ### P1.21: Member Event Handler
-- [ ] Create `src/matrix/monitor/events/members.ts` with:
+- [x] Create `src/matrix/monitor/events/members.ts` with:
   - Handle m.room.member events
   - Track joins/leaves if needed
 
@@ -317,7 +317,7 @@
 - [x] `src/matrix/monitor/events/types.ts`
 - [x] `src/matrix/monitor/room-config.ts`
 - [x] `src/matrix/monitor/events/reactions.ts`
-- [ ] `src/matrix/monitor/events/members.ts`
+- [x] `src/matrix/monitor/events/members.ts`
 - [ ] `src/matrix/monitor/events/rooms.ts`
 - [ ] `src/matrix/monitor/events/typing.ts`
 - [ ] `src/matrix/monitor/message-handler/index.ts`
@@ -367,6 +367,7 @@
 - [x] P1.18: Create `src/matrix/monitor/events/index.ts` with registerMatrixEvents() - central entry point for event registration, includes inline handlers for messages, reactions, members, and rooms following Slack pattern
 - [x] P1.19: Create `src/matrix/monitor/events/messages.ts` with registerMatrixMessageEvents() - handles Room.timeline events, m.room.message filtering, historical message skipping, self-message filtering, non-blocking dispatch, edit handling with system events, redaction handling with system events. Also created `events/types.ts` for MatrixMessageHandler type and `room-config.ts` for resolveMatrixRoomLabel and resolveMatrixRoomConfig helpers.
 - [x] P1.20: Create `src/matrix/monitor/events/reactions.ts` with registerMatrixReactionEvents() - handles m.reaction events via Room.timeline, filters by reactionNotifications mode (off/all/own/allowlist), emits system event notifications with actor display names, room labels, and proper session key routing. Updated events/index.ts to import from separate file.
+- [x] P1.21: Create `src/matrix/monitor/events/members.ts` with registerMatrixMemberEvents() - handles RoomMemberEvent.Membership for membership changes (join, leave, ban, invite), bot invite detection, debug logging for membership transitions. Extracted from inline function in events/index.ts following the pattern of messages.ts and reactions.ts.
 
 ---
 

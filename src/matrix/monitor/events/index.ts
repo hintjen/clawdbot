@@ -6,8 +6,9 @@
  * registration of individual event types (messages, reactions, members, rooms).
  */
 
-import { RoomMemberEvent, RoomStateEvent } from "matrix-js-sdk";
+import { RoomStateEvent } from "matrix-js-sdk";
 import type { MatrixMonitorContext } from "../context.js";
+import { registerMatrixMemberEvents } from "./members.js";
 import { registerMatrixMessageEvents } from "./messages.js";
 import { registerMatrixReactionEvents } from "./reactions.js";
 import type { MatrixMessageHandler } from "./types.js";
@@ -45,46 +46,12 @@ export function registerMatrixEvents(params: RegisterMatrixEventsParams): void {
   // Register individual event handlers from separate files
   registerMatrixMessageEvents({ ctx, handleMatrixMessage });
   registerMatrixReactionEvents({ ctx });
-  registerMemberEvents({ ctx });
+  registerMatrixMemberEvents({ ctx });
   registerRoomEvents({ ctx });
 
   ctx.logger.debug("matrix event handlers registered");
 }
 
-/**
- * Register member event handlers.
- * Handles m.room.member events for joins/leaves.
- */
-function registerMemberEvents(params: { ctx: MatrixMonitorContext }): void {
-  const { ctx } = params;
-
-  ctx.client.on(RoomMemberEvent.Membership, (event, member, oldMembership) => {
-    try {
-      const roomId = event.getRoomId();
-      const userId = member.userId;
-      const newMembership = member.membership;
-
-      if (!roomId || !userId) return;
-
-      // Log membership changes for debugging
-      if (oldMembership !== newMembership) {
-        ctx.logger.debug(
-          `member ${userId} in ${roomId}: ${oldMembership ?? "none"} -> ${newMembership}`,
-        );
-      }
-
-      // Handle invites to the bot
-      if (userId === ctx.botUserId && newMembership === "invite") {
-        ctx.logger.info(`bot invited to room ${roomId}`);
-        // Auto-join logic could go here based on config
-      }
-    } catch (err) {
-      ctx.runtime.error?.(`matrix member handler error: ${String(err)}`);
-    }
-  });
-
-  ctx.logger.debug("matrix member events registered");
-}
 
 /**
  * Register room event handlers.
