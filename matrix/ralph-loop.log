@@ -2159,3 +2159,207 @@ Changes committed (e4d308b9d) and pushed to `origin/matrix`.
 
 [0;32m=== Build Iteration 28 ===[0m
 
+I'll start by orienting myself with the context and checking the current state of the implementation plan.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 32 incomplete tasks remaining. Let me identify the first incomplete task:
+    [Bash]
+The highest priority incomplete task is **P1.28: Create `src/matrix/index.ts` with all exports**. Let me first review the existing Matrix files to understand what needs to be exported:
+    [Glob]
+The files might be in the matrix subdirectory. Let me check:
+    [Glob]
+Let me check from the parent directory:
+    [Bash]
+Good, the files exist in `../src/matrix/`. Now let me review the files to understand what exports are needed:
+    [Read]
+    [Read]
+    [Read]
+Let me read the remaining files to understand all exports:
+    [Read]
+    [Read]
+    [Read]
+    [Read]
+    [Read]
+    [Read]
+    [Read]
+Now let me also look at an existing provider's index.ts to match the pattern (e.g., Slack):
+    [Read]
+Now I have all the information I need to create the index.ts file. Let me create it following the same pattern as the Slack index.ts:
+    [Write]
+Now let me validate the TypeScript syntax by running tsc:
+    [Bash]
+The errors are all from node_modules (the Carbon dependency mentioned in CLAUDE.md that shouldn't be updated). Let me try checking just the matrix directory with the skipLibCheck flag or filter for just errors in our files:
+    [Bash]
+There are pre-existing TypeScript errors in other matrix files, not in my index.ts file. Let me verify that my new index.ts file specifically doesn't have any new errors by checking if it compiles correctly with the right imports:
+    [Bash]
+No errors in the index.ts file itself. The pre-existing errors in other files are unrelated to this task. Let me update the implementation plan to mark this task as complete:
+    [Read]
+    [Edit]
+Now let me also update the File Checklist section:
+    [Read]
+    [Edit]
+Now let me also add this task to the Completed Tasks section at the end:
+    [Read]
+    [Edit]
+Also update the last modified date:
+    [Edit]
+Now let me commit and push the changes:
+    [Bash]
+    [Bash]
+Task completed successfully.
+
+**Summary:** Created `src/matrix/index.ts` with all module exports following the Slack provider pattern. The file exports:
+- Account management functions (`resolveMatrixAccount`, `listMatrixAccountIds`, etc.)
+- Actions (reactions, messages, read receipts, room management, user/room info)
+- Client lifecycle functions (`createMatrixClient`, `loginMatrix`, `startMatrixSync`, etc.)
+- Message formatting utilities (`markdownToMatrixHtml`, `matrixHtmlToPlaintext`, etc.)
+- Monitor provider (`monitorMatrixProvider`)
+- Probe/health check (`probeMatrix`)
+- Send messages (`sendMessageMatrix`)
+- Token/credentials helpers
+- Types
+- Typing indicators
+
+Commit `b83453a04` pushed to the `matrix` branch.
+--- 145.8s, 32 turns ---
+
+[0;32m=== Build Iteration 29 ===[0m
+
+I'll start by orienting myself with the context and checking the current state of the implementation plan.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 30 incomplete tasks. The first incomplete task is `P1.29: Channel Plugin Definition` - creating `src/channels/plugins/matrix.ts`. Let me look at an existing channel plugin to understand the pattern:
+    [Glob]
+    [Glob]
+    [Bash]
+    [Bash]
+Let me read the Discord plugin as a reference since it was mentioned in the PLAN.md:
+    [Read]
+Now let me look at the Slack plugin for comparison and the types file:
+    [Read]
+    [Read]
+Now let me read the types.plugin.ts to understand the full ChannelPlugin interface:
+    [Read]
+Now I need to look at the Matrix modules that were already created to understand what's available. Let me check the Matrix account resolution module and index:
+    [Read]
+    [Read]
+Now let me check the probe.ts and send.ts to understand the interfaces:
+    [Read]
+    [Read]
+Now let me look at the group-mentions helper to understand how to add support for Matrix:
+    [Read]
+    [Read]
+Now let me check the index.ts for plugins to see how other plugins are registered:
+    [Read]
+Now let me look at the types to understand the adapters better:
+    [Read]
+    [Read]
+Now I have a good understanding of the plugin pattern. Let me also check the config helpers and setup helpers:
+    [Read]
+    [Read]
+Now let me also check the registry.ts to see the meta for Matrix:
+    [Read]
+Now I have all the information I need. Let me create the Matrix channel plugin. First, let me check if there's a setup-helpers file:
+    [Read]
+Now let me look at the monitor provider to understand what it returns:
+    [Read]
+Now I have all the context I need. Let me create the Matrix channel plugin file:
+    [Write]
+Now I need to add the `normalizeMatrixMessagingTarget` function to `normalize-target.ts`:
+    [Edit]
+I already read this file earlier, let me re-read it and try again:
+    [Read]
+    [Edit]
+Now let me run TypeScript compilation to check for errors:
+    [Bash]
+There are several errors to address. The main issues are:
+
+1. Matrix is not in ChannelsConfig - this was supposed to be fixed in P0.5 but seems there might be an issue
+2. dock.ts needs a matrix entry
+3. load.ts needs matrix loader
+4. outbound/load.ts needs matrix loader
+5. Some type mismatches in my plugin file
+
+Let me first check the zod-schema to see if matrix was properly added to ChannelsConfig:
+    [Read]
+Good, the Matrix schema is properly added. Now let me check the types.ts file that exports ChannelsConfig:
+    [Grep]
+    [Read]
+I see the issue - Matrix is missing from the `ChannelsConfig` type. Let me add it:
+    [Read]
+Now I need to add Matrix to the ChannelsConfig type:
+    [Edit]
+I just read this file. Let me try again:
+    [Read]
+    [Edit]
+Now I need to fix my matrix.ts plugin file to use ClawdbotConfig properly and fix the type issues. Let me update it:
+    [Read]
+Let me fix the plugin file - I need to update the resolveMatrixGroupRequireMention function to accept ClawdbotConfig, fix the deps.sendMatrix issue, and remove historyLimit from the monitorMatrixProvider call:
+    [Write]
+Now let me run the TypeScript check again to see remaining errors:
+    [Bash]
+I see I need to fix the OutboundDeliveryResult type issue, and also add matrix to dock.ts, plugins/load.ts, and plugins/outbound/load.ts. Let me first check what OutboundDeliveryResult looks like:
+    [Grep]
+    [Read]
+I see the issue - OutboundDeliveryResult expects a `messageId` property, but my Matrix send result has `eventId`. I need to map `eventId` to `messageId`. Let me fix the matrix plugin:
+    [Edit]
+Now let me check the dock.ts and load.ts files to add Matrix:
+    [Read]
+I need to add Matrix to the DOCKS record. Let me also add the group-mentions import and add the Matrix dock entry:
+    [Edit]
+Now let me add the Matrix dock entry after the msteams entry:
+    [Edit]
+Now let me update the plugins/load.ts and plugins/outbound/load.ts:
+    [Read]
+    [Edit]
+    [Read]
+I need to create a matrix outbound module and add it to the loader. Let me first check an existing outbound for reference:
+    [Read]
+Now let me create the Matrix outbound adapter:
+    [Write]
+    [Edit]
+    [Read]
+    [Edit]
+Now let me also update the index.ts to register the matrix plugin:
+    [Read]
+    [Edit]
+    [Edit]
+    [Edit]
+Now let me run TypeScript check again:
+    [Bash]
+The matrix plugin-related errors are gone. The remaining errors are in `src/matrix/client.ts` which are pre-existing issues not related to my current task. Let me verify there are no errors specifically related to my changes by looking at specific files:
+    [Bash]
+No errors in my changes. Now let me update the IMPLEMENTATION_PLAN.md to mark this task as complete:
+    [Read]
+Now let me update the IMPLEMENTATION_PLAN.md to mark tasks P1.29, P1.30, P1.31 and P2.7 (outbound/matrix.ts) as complete:
+    [Edit]
+    [Edit]
+Now update the File Checklist to show the completed files:
+    [Edit]
+Now let me add the completed task to the Completed Tasks section:
+    [Edit]
+Now let me commit and push the changes:
+    [Bash]
+    [Bash]
+    [Bash]
+I have completed the task P1.29 (Channel Plugin Definition) along with related tasks P1.30 (Register Plugin), P1.31 (Channel Dock Integration), and P2.7 (Outbound Plugin).
+
+**Summary of changes:**
+1. Created `src/channels/plugins/matrix.ts` - full channel plugin with capabilities, config helpers, security, groups, threading, messaging, outbound, status, and gateway adapters
+2. Created `src/channels/plugins/outbound/matrix.ts` - lightweight outbound adapter for CLI send support
+3. Added `matrix` to `ChannelsConfig` type in `types.channels.ts` 
+4. Added Matrix dock entry to `dock.ts` with capabilities, streaming defaults, config helpers, groups, mentions, and threading
+5. Registered `matrixPlugin` in `plugins/index.ts`
+6. Added matrix lazy loader to `plugins/load.ts`
+7. Added matrix outbound loader to `plugins/outbound/load.ts`
+8. Added `normalizeMatrixMessagingTarget()` to `normalize-target.ts`
+
+Changes committed and pushed to origin/matrix.
+--- 585.1s, 69 turns ---
+
+[0;32m=== Build Iteration 30 ===[0m
+

@@ -242,7 +242,7 @@
 ## P2: Testing
 
 ### P2.1: Unit Tests - Core
-- [ ] Create `src/matrix/accounts.test.ts`
+- [x] Create `src/matrix/accounts.test.ts`
 - [ ] Create `src/matrix/format.test.ts` - markdown/HTML conversion
 - [ ] Create `src/matrix/token.test.ts`
 
@@ -384,6 +384,7 @@
 - [x] P1.30: Import matrixPlugin in `src/channels/plugins/index.ts` and add to resolveChannels() array.
 - [x] P1.31: Add Matrix entry to `src/channels/dock.ts` for shared behavior.
 - [x] P2.7: Create `src/channels/plugins/outbound/matrix.ts` for CLI send support.
+- [x] P2.1: Create `src/matrix/accounts.test.ts` with unit tests for listMatrixAccountIds, resolveDefaultMatrixAccountId, resolveMatrixAccount, listEnabledMatrixAccounts (25 tests).
 
 ---
 
