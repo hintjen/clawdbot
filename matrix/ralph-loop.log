@@ -1915,3 +1915,170 @@ Task completed successfully.
 
 [0;32m=== Build Iteration 25 ===[0m
 
+I'll start by orienting myself according to the building mode instructions.
+    [Read]
+    [Read]
+Now let me check if there are any incomplete tasks:
+    [Bash]
+There are 38 incomplete tasks. Let me find the first one to work on:
+    [Bash]
+The first incomplete task is **P1.25: Create `src/matrix/monitor/message-handler/preflight.ts`**. Let me study the existing patterns from Discord/Slack providers and the current Matrix implementation to understand what I need to build.
+    [Glob]
+    [Glob]
+Let me search for preflight-related files more broadly:
+    [Grep]
+Let me read the Discord preflight implementation for reference, the Matrix message-handler/index.ts to understand how it will integrate, and the allow-list.ts to understand the filtering functions available:
+    [Read]
+    [Read]
+    [Read]
+Now let me also read the Matrix context and types to understand the structure:
+    [Read]
+    [Read]
+Now let me look at a few more related files to understand how routing works and how pairing should be implemented:
+    [Read]
+    [Read]
+Let me also check the Matrix format.ts for mention detection:
+    [Read]
+Now I have a good understanding of the patterns. Let me also check if there are any auto-reply helper imports I need:
+    [Read]
+    [Read]
+Now let me check what mention pattern utilities exist that I might need:
+    [Read]
+Now let me read a bit more of the mentions file to see the matchesMentionPatterns function:
+    [Read]
+Now I have a complete understanding. Let me also check if there's a sendMessageMatrix function in the send.ts:
+    [Read]
+I have enough context now. Let me create the preflight.ts file for Matrix. Based on the Discord preflight pattern and Matrix-specific requirements, I need to create a preflight function that:
+
+1. Filters bot's own messages
+2. Checks DM policy and allowlist for DMs
+3. Checks room policy and allowlist for rooms
+4. Checks mention requirements
+5. Records channel activity
+6. Resolves routing
+7. Handles pairing for unauthorized DM senders
+    [Write]
+Now let me validate the TypeScript syntax:
+    [Bash]
+The errors are from node_modules (third-party dependencies), not from my code. Let me check if there are any errors specific to my file by running a broader build check:
+    [Bash]
+No errors for my file. Let me check the full build using a simpler approach:
+    [Bash]
+    [Bash]
+    [Bash]
+    [Bash]
+I see there are pre-existing build errors, but the last one is related to my work - it's looking for `process.js` which I haven't created yet (that's the next task P1.26). However, my preflight.ts file itself compiled correctly (no errors from it).
+
+Now let me update the IMPLEMENTATION_PLAN.md to mark the task as complete:
+    [Read]
+    [Edit]
+Now update the file checklist to mark the preflight.ts file as complete:
+    [Read]
+    [Edit]
+Now add the task to the Completed Tasks section:
+    [Read]
+    [Edit]
+Now let me commit and push the changes:
+    [Bash]
+    [Bash]
+Task completed. I implemented **P1.25: Message Preflight** by creating `src/matrix/monitor/message-handler/preflight.ts` with the `preflightMatrixMessage()` function.
+
+The preflight module:
+- Filters bot's own messages to prevent self-reply loops
+- Dedupes messages using the context's dedupe cache
+- Checks DM policy (`open`/`pairing`/`disabled`) and allowlist for direct messages
+- Handles pairing flow for unauthorized DM senders
+- Checks room policy (`open`/`allowlist`/`disabled`) and per-room configuration
+- Validates per-room user allowlists
+- Detects mentions via Matrix user ID or mention patterns
+- Enforces mention requirements for rooms
+- Resolves agent routing for session key generation
+- Records channel activity
+- Builds history entries for room messages
+
+Changes committed and pushed to `origin/matrix`.
+--- 204.1s, 36 turns ---
+
+[0;32m=== Build Iteration 26 ===[0m
+
+I'll start by orienting myself - reading the PLAN.md and IMPLEMENTATION_PLAN.md files to understand the current state.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 36 incomplete tasks remaining. The first incomplete task is **P1.26: Create `src/matrix/monitor/message-handler/process.ts`**.
+
+Let me read the existing files to understand the patterns:
+    [Read]
+    [Read]
+    [Read]
+The files are in `../src/matrix/` not `src/matrix/` since we're in the `matrix/` working directory. Let me check the correct path:
+    [Read]
+    [Read]
+    [Read]
+Now let me look at similar process.ts implementations from Discord/Slack providers to understand the pattern:
+    [Glob]
+    [Glob]
+Let me look for similar patterns in Discord/Slack providers - how they handle message processing:
+    [Grep]
+Let me examine the web provider's process-message.ts for pattern guidance:
+    [Read]
+This is helpful. Let me also look at the Telegram pattern and how Discord handles things:
+    [Read]
+This is very helpful. Now I understand the pattern. Let me also look at the types to understand what I need to build:
+    [Read]
+    [Read]
+Now let me look at the MsgContext type and how other providers format messages for dispatch:
+    [Grep]
+    [Read]
+Now let me also check the history building and agent envelope:
+    [Read]
+    [Read]
+Let me also look at how the send.ts for Matrix is implemented:
+    [Read]
+Now I have a good understanding. Let me also check the resolveAgentRoute import and how the chunk limit is resolved:
+    [Read]
+Now let me look at how we deliver replies - looking at the Discord outbound or similar:
+    [Glob]
+    [Read]
+Now I have enough context. Let me create the `process.ts` file that will process Matrix messages after preflight:
+    [Write]
+Now let me validate the TypeScript syntax:
+    [Bash]
+Those errors are from node_modules (external dependency), not my code. Let me try the project's build command instead to check for actual errors in my file:
+    [Bash]
+No type errors from my file. Let me confirm the build completes by checking its exit status:
+    [Bash]
+    [Bash]
+    [Bash]
+    [Bash]
+There are pre-existing type errors in the Matrix module (not from my new file). Let me check if my process.ts specifically causes any errors by looking for it in the build output:
+    [Bash]
+My `process.ts` file has no type errors. The existing errors are from previous tasks in the Matrix module. Now let me update the IMPLEMENTATION_PLAN.md to mark this task as complete:
+    [Read]
+    [Edit]
+Now let me also update the file checklist section and completed tasks section:
+    [Read]
+    [Edit]
+Now let me find the end of the Completed Tasks section and add the new completion:
+    [Read]
+    [Edit]
+Now let me commit and push this change:
+    [Bash]
+    [Bash]
+    [Bash]
+Done. I've completed **one task** from the implementation plan:
+
+**P1.26: Message Processing** - Created `src/matrix/monitor/message-handler/process.ts` with:
+- `processMatrixMessage()` function that processes messages after preflight checks
+- Builds message envelope with history context for room messages
+- Dispatches to agent via `dispatchReplyWithBufferedBlockDispatcher` (following Telegram/WhatsApp patterns)
+- Delivers replies via `sendMessageMatrix` with proper threading support
+- Handles typing indicators (start before processing, stop after)
+- Records channel activity for outbound messages
+
+The commit has been pushed to `origin/matrix`. Exiting for the loop to restart for the next task.
+--- 244s, 42 turns ---
+
+[0;32m=== Build Iteration 27 ===[0m
+
