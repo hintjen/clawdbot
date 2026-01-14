@@ -254,7 +254,7 @@
 - [x] Create `src/matrix/monitor/message-handler.test.ts` - message processing
 
 ### P2.4: Integration Tests
-- [ ] Create `src/matrix/monitor.test.ts` - provider integration
+- [x] Create `src/matrix/monitor.test.ts` - provider integration
 - [ ] Test with local Synapse instance (manual verification)
 - [ ] Test DM flow
 - [ ] Test group room flow
@@ -390,6 +390,7 @@
 - [x] P2.2: Create `src/matrix/actions.test.ts` with unit tests for normalizeEmoji, reactions (add/remove/removeOwn/list), messages (edit/delete/read), room management (join/leave/invite), user/room info, read receipts, client management (44 tests).
 - [x] P2.3: Create `src/matrix/monitor/allow-list.test.ts` with unit tests for normalizeMatrixUserId, normalizeMatrixAllowList, allowListMatchesUser, isMatrixUserAllowed, isMatrixRoomAllowed, resolveMatrixRoomConfig, resolveMatrixShouldRequireMention, isMatrixRoomUserAllowed, shouldEmitMatrixReactionNotification, isMatrixRoomAllowedByPolicy (99 tests).
 - [x] P2.3: Create `src/matrix/monitor/message-handler.test.ts` with unit tests for createMatrixMessageHandler, preflightMatrixMessage (bot self-filtering, duplicate detection, DM policy, room policy, mention requirement, empty message filtering, history entries, command authorization, agent route resolution) (38 tests).
+- [x] P2.4: Create `src/matrix/monitor.test.ts` with integration tests for monitorMatrixProvider - startup/initialization, error handling (disabled account, missing homeserver/userId/credentials, login failure, sync failure), configuration options (accountId, config override, accessToken/password override, abortSignal, custom runtime), event handler registration (Room.timeline, RoomMember.membership, RoomMember.typing, RoomState.events), policy configuration (disabled DM, allowlist group policy, disabled group policy), provider lifecycle (abort signal, log messages) (27 tests).
 
 ---
 
