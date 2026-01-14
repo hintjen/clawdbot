@@ -8,23 +8,11 @@
 
 import { RoomEvent, RoomMemberEvent, RoomStateEvent } from "matrix-js-sdk";
 import type { MatrixMonitorContext } from "../context.js";
+import { registerMatrixMessageEvents } from "./messages.js";
+import type { MatrixMessageHandler } from "./types.js";
 
-/**
- * Handler function type for processing Matrix room messages.
- */
-export type MatrixMessageHandler = (
-  params: {
-    eventId: string;
-    roomId: string;
-    sender: string;
-    body: string;
-    formattedBody?: string;
-    msgtype: string;
-    replyTo?: string;
-    timestamp: number;
-  },
-  meta: { source: "timeline" | "app_mention"; wasMentioned?: boolean },
-) => Promise<void>;
+// Re-export types for convenience
+export type { MatrixMessageHandler } from "./types.js";
 
 /**
  * Parameters for registerMatrixEvents().
@@ -53,104 +41,13 @@ export function registerMatrixEvents(params: RegisterMatrixEventsParams): void {
 
   ctx.logger.debug("registering matrix event handlers");
 
-  // Import and register individual event handlers
-  // These will be implemented in separate files following the Slack pattern
-  registerMessageEvents({ ctx, handleMatrixMessage });
+  // Register individual event handlers from separate files
+  registerMatrixMessageEvents({ ctx, handleMatrixMessage });
   registerReactionEvents({ ctx });
   registerMemberEvents({ ctx });
   registerRoomEvents({ ctx });
 
   ctx.logger.debug("matrix event handlers registered");
-}
-
-/**
- * Register message event handlers (Room.timeline).
- * Handles m.room.message events for incoming messages.
- */
-function registerMessageEvents(params: {
-  ctx: MatrixMonitorContext;
-  handleMatrixMessage: MatrixMessageHandler;
-}): void {
-  const { ctx, handleMatrixMessage } = params;
-
-  ctx.client.on(
-    RoomEvent.Timeline,
-    async (event, room, toStartOfTimeline, removed, data) => {
-      try {
-        // Skip historical messages (initial sync backfill)
-        if (toStartOfTimeline) return;
-        if (data.liveEvent === false) return;
-
-        // Skip if no room (shouldn't happen)
-        if (!room) return;
-
-        const eventType = event.getType();
-        const roomId = room.roomId;
-        const eventId = event.getId();
-        const sender = event.getSender();
-        const timestamp = event.getTs();
-
-        // Only handle message events
-        if (eventType !== "m.room.message") return;
-
-        // Skip if missing required fields
-        if (!eventId || !sender) return;
-
-        // Skip own messages (bot self-filter)
-        if (sender === ctx.botUserId) return;
-
-        // Check dedupe (already seen this event?)
-        if (ctx.markMessageSeen(roomId, eventId)) {
-          ctx.logger.debug(`skipping duplicate event ${eventId}`);
-          return;
-        }
-
-        // Extract message content
-        const content = event.getContent();
-        const body = content.body ?? "";
-        const formattedBody = content.formatted_body as string | undefined;
-        const msgtype = content.msgtype ?? "m.text";
-
-        // Extract reply context
-        const relatesTo = content["m.relates_to"] as
-          | { "m.in_reply_to"?: { event_id?: string } }
-          | undefined;
-        const replyTo = relatesTo?.["m.in_reply_to"]?.event_id;
-
-        // Check room/DM permissions - need to resolve room info first
-        const roomInfo = await ctx.resolveRoomInfo(roomId);
-        const isDirect = roomInfo.isDirect ?? room.getJoinedMemberCount() === 2;
-
-        if (!ctx.isRoomAllowed({ roomId, isDirect })) {
-          ctx.logger.debug(`skipping message from disallowed room ${roomId}`);
-          return;
-        }
-
-        // Dispatch to message handler (non-blocking)
-        handleMatrixMessage(
-          {
-            eventId,
-            roomId,
-            sender,
-            body,
-            formattedBody,
-            msgtype,
-            replyTo,
-            timestamp,
-          },
-          { source: "timeline" },
-        ).catch((err) => {
-          ctx.runtime.error?.(
-            `matrix message handler failed: ${String(err)}`,
-          );
-        });
-      } catch (err) {
-        ctx.runtime.error?.(`matrix timeline handler error: ${String(err)}`);
-      }
-    },
-  );
-
-  ctx.logger.debug("matrix message events registered");
 }
 
 /**

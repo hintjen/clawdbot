@@ -155,12 +155,14 @@
 - [x] Create `src/matrix/monitor/events/index.ts` with registerMatrixEvents()
 
 ### P1.19: Message Event Handler
-- [ ] Create `src/matrix/monitor/events/messages.ts` with:
+- [x] Create `src/matrix/monitor/events/messages.ts` with:
   - Handle Room.timeline events
   - Filter m.room.message type
   - Skip historical messages (toStartOfTimeline)
   - Skip own messages (bot self-filter)
   - Non-blocking dispatch to agent
+  - Handle message edits (m.replace) with system event
+  - Handle redactions (message deletions) with system event
 
 ### P1.20: Reaction Event Handler
 - [ ] Create `src/matrix/monitor/events/reactions.ts` with:
@@ -311,7 +313,9 @@
 - [x] `src/matrix/monitor/context.ts`
 - [x] `src/matrix/monitor/types.ts`
 - [x] `src/matrix/monitor/events/index.ts`
-- [ ] `src/matrix/monitor/events/messages.ts`
+- [x] `src/matrix/monitor/events/messages.ts`
+- [x] `src/matrix/monitor/events/types.ts`
+- [x] `src/matrix/monitor/room-config.ts`
 - [ ] `src/matrix/monitor/events/reactions.ts`
 - [ ] `src/matrix/monitor/events/members.ts`
 - [ ] `src/matrix/monitor/events/rooms.ts`
@@ -361,6 +365,7 @@
 - [x] P1.16: Create `src/matrix/monitor/context.ts` with createMatrixMonitorContext() - client ref, account config, runtime, bot userId, allowFrom, room histories, dedupe cache, session key resolution, room/user info caching
 - [x] P1.17: Create `src/matrix/monitor/allow-list.ts` with normalizeMatrixAllowList, isMatrixUserAllowed, isMatrixRoomAllowed, resolveMatrixRoomConfig, resolveMatrixShouldRequireMention, isMatrixRoomUserAllowed, shouldEmitMatrixReactionNotification, isMatrixRoomAllowedByPolicy
 - [x] P1.18: Create `src/matrix/monitor/events/index.ts` with registerMatrixEvents() - central entry point for event registration, includes inline handlers for messages, reactions, members, and rooms following Slack pattern
+- [x] P1.19: Create `src/matrix/monitor/events/messages.ts` with registerMatrixMessageEvents() - handles Room.timeline events, m.room.message filtering, historical message skipping, self-message filtering, non-blocking dispatch, edit handling with system events, redaction handling with system events. Also created `events/types.ts` for MatrixMessageHandler type and `room-config.ts` for resolveMatrixRoomLabel and resolveMatrixRoomConfig helpers.
 
 ---
 
