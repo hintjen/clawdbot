@@ -2468,3 +2468,153 @@ Committed and pushed to `matrix` branch.
 
 [0;32m=== Build Iteration 32 ===[0m
 
+I'll start by orienting myself to the current state of the Matrix provider implementation.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 20 incomplete tasks. Let me find the first incomplete task:
+    [Bash]
+The first incomplete task is to create `src/matrix/token.test.ts`. Let me first read the `token.ts` file to understand what needs to be tested:
+    [Read]
+Now let me look at an existing test file to follow the project's testing patterns:
+    [Read]
+Now I'll create the `token.test.ts` file with comprehensive tests for all functions in `token.ts`:
+    [Write]
+Now let me run the tests to validate they pass:
+    [Bash]
+    [Bash]
+    [Bash]
+All 41 tests pass. Now let me also check TypeScript compilation:
+    [Bash]
+There are TypeScript errors in other files (client.ts), but those are pre-existing and not related to the test file I just created. Let me verify that my test file compiles correctly by checking just that file:
+    [Bash]
+Those are type errors from dependencies (node_modules), not from my code. The test file itself is valid - it passed all 41 tests with vitest. The pre-existing TypeScript issues in client.ts are not related to this task.
+
+Now let me update the implementation plan to mark this task as complete:
+    [Read]
+    [Edit]
+Now add this task to the Completed Tasks section:
+    [Read]
+    [Edit]
+Now let me commit and push the changes:
+    [Bash]
+    [Bash]
+    [Bash]
+Completed task P2.1: Create `src/matrix/token.test.ts` with 41 unit tests for the Matrix credential resolution module. The tests cover:
+
+- `normalizeMatrixCredential` - whitespace normalization edge cases
+- `normalizeMatrixAccessToken` - access token normalization 
+- `normalizeMatrixPassword` - password normalization
+- `resolveMatrixCredentials` - config vs env precedence, source tracking, mixed credential scenarios
+
+Changes committed and pushed to `origin/matrix`.
+--- 149.9s, 20 turns ---
+
+[0;32m=== Build Iteration 33 ===[0m
+
+I'll start by orienting myself with the context and checking the current state of the implementation plan.
+    [Read]
+    [Read]
+Now let me check how many incomplete tasks remain:
+    [Bash]
+There are 19 incomplete tasks. Let me find the highest priority one:
+    [Bash]
+The highest priority incomplete task is **P2.2: Create `src/matrix/actions.test.ts` - action function tests**.
+
+Let me look at the existing actions.ts to understand what needs to be tested, and also look at an existing test file pattern to follow:
+    [Read]
+    [Read]
+Now I understand the test pattern. The actions.ts file has many functions that all use `withClient` to get or create a Matrix client. Since these functions call into matrix-js-sdk, I need to mock the client for unit testing.
+
+Let me also look at another test file to see how mocking is handled:
+    [Read]
+Now I have a good understanding of the test patterns. For actions.test.ts, I need to test the `normalizeEmoji` helper function and the exported action functions. The challenge is that most exported functions use `withClient` which requires actual Matrix client interaction.
+
+For unit tests, I'll focus on:
+1. Testing the internal `normalizeEmoji` function
+2. Testing with mocked client behavior using vi.mock
+
+Let me create the test file:
+    [TodoWrite]
+    [Write]
+Now let me run the tests to verify they pass:
+    [Bash]
+    [Bash]
+    [Bash]
+    [Bash]
+All 44 tests pass. Now let me update the implementation plan and commit:
+    [Read]
+    [Edit]
+Now let me add this to the completed tasks section:
+    [Read]
+    [Edit]
+    [TodoWrite]
+Now let me commit and push:
+    [Bash]
+    [Bash]
+    [Bash]
+Task completed. 
+
+**Summary:** Created `src/matrix/actions.test.ts` with 44 unit tests covering:
+- `normalizeEmoji` function behavior
+- Reaction actions (add, remove, removeOwn, list)
+- Message actions (edit, delete, read)
+- Room management (join, leave, invite)
+- User/room info retrieval
+- Read receipts
+- Client management (withClient helper, error handling, cleanup)
+
+Changes committed and pushed to the `matrix` branch.
+--- 194.5s, 22 turns ---
+
+[0;32m=== Build Iteration 34 ===[0m
+
+I'll start by orienting myself with the context and checking the current state of the implementation plan.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 18 incomplete tasks. Let me identify the first incomplete task:
+    [Bash]
+The next task is **P2.3: Create `src/matrix/monitor/allow-list.test.ts` - allowFrom filtering unit tests**.
+
+Let me first look at the allow-list.ts file to understand what needs to be tested:
+    [Read]
+Now let me look at existing test files for patterns to follow:
+    [Read]
+Now I have a good understanding of the test patterns. Let me create the allow-list test file:
+    [Write]
+Now let me run the tests to make sure they pass:
+    [Bash]
+    [Bash]
+All 99 tests pass. Now let me also check TypeScript syntax:
+    [Bash]
+These are known type errors in node_modules (not related to my test file). The test file itself is fine since vitest ran it successfully. Let me now update the IMPLEMENTATION_PLAN.md to mark the task as complete:
+    [Read]
+    [Edit]
+Now I need to add this to the Completed Tasks section. Let me find the section:
+    [Read]
+    [Edit]
+Now let me commit and push:
+    [Bash]
+    [Bash]
+    [Bash]
+Task complete. I've implemented **P2.3: Create `src/matrix/monitor/allow-list.test.ts`** with 99 unit tests covering all the allowFrom filtering functions:
+
+- `normalizeMatrixUserId` - user ID normalization
+- `normalizeMatrixAllowList` - wildcard, domain, and user ID parsing
+- `allowListMatchesUser` - matching logic for allowlists
+- `isMatrixUserAllowed` - DM policy enforcement
+- `isMatrixRoomAllowed` - group/room policy enforcement
+- `resolveMatrixRoomConfig` - room config lookup by ID/alias/name/wildcard
+- `resolveMatrixShouldRequireMention` - mention requirement resolution
+- `isMatrixRoomUserAllowed` - per-room user filtering
+- `shouldEmitMatrixReactionNotification` - reaction notification modes
+- `isMatrixRoomAllowedByPolicy` - policy helper
+
+All 99 tests pass. Changes committed and pushed to `origin/matrix`.
+--- 159.1s, 18 turns ---
+
+[0;32m=== Build Iteration 35 ===[0m
+
