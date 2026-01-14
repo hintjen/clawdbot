@@ -187,7 +187,7 @@
 - [x] Create `src/matrix/monitor/message-handler/index.ts` with createMatrixMessageHandler()
 
 ### P1.25: Message Preflight
-- [ ] Create `src/matrix/monitor/message-handler/preflight.ts` with:
+- [x] Create `src/matrix/monitor/message-handler/preflight.ts` with:
   - Check if sender is allowed (DM policy, allowFrom)
   - Check if room is allowed (room config)
   - Check for mention/trigger if required
@@ -321,7 +321,7 @@
 - [x] `src/matrix/monitor/events/rooms.ts`
 - [x] `src/matrix/monitor/events/typing.ts`
 - [x] `src/matrix/monitor/message-handler/index.ts`
-- [ ] `src/matrix/monitor/message-handler/preflight.ts`
+- [x] `src/matrix/monitor/message-handler/preflight.ts`
 - [ ] `src/matrix/monitor/message-handler/process.ts`
 - [ ] `src/channels/plugins/matrix.ts`
 - [ ] `src/channels/plugins/onboarding/matrix.ts`
@@ -371,6 +371,7 @@
 - [x] P1.22: Create `src/matrix/monitor/events/rooms.ts` with registerMatrixRoomEvents() - handles RoomStateEvent.Events for room tombstones (m.room.tombstone), room creation (m.room.create), alias changes (m.room.canonical_alias), and name changes (m.room.name). Extracted from inline function in events/index.ts following the pattern of messages.ts, reactions.ts, and members.ts.
 - [x] P1.23: Create `src/matrix/monitor/events/typing.ts` with registerMatrixTypingEvents() - handles RoomMemberEvent.Typing for incoming typing indicators from other users, logs typing start/stop for debugging, filters out bot's own typing events. Updated events/index.ts to import and register typing handler.
 - [x] P1.24: Create `src/matrix/monitor/message-handler/index.ts` with createMatrixMessageHandler() - factory function returning MatrixMessageHandler that runs preflight -> process pipeline, follows Discord/Slack pattern with non-blocking concurrent execution, errors caught and logged.
+- [x] P1.25: Create `src/matrix/monitor/message-handler/preflight.ts` with preflightMatrixMessage() - validates incoming messages before processing: filters bot's own messages, checks DM policy/allowlist for DMs, checks room policy/allowlist for rooms, handles pairing for unauthorized DM senders, checks mention requirements, resolves agent route, records channel activity, builds history entries.
 
 ---
 
