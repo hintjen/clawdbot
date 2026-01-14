@@ -144,7 +144,7 @@
   - Dedupe cache
 
 ### P1.17: AllowFrom Filtering
-- [ ] Create `src/matrix/monitor/allow-list.ts` with:
+- [x] Create `src/matrix/monitor/allow-list.ts` with:
   - normalizeMatrixAllowList(raw)
   - isMatrixUserAllowed(userId, allowFrom)
   - isMatrixRoomAllowed(roomId, config)
@@ -307,7 +307,7 @@
 - [x] `src/matrix/types.ts`
 - [x] `src/matrix/typing.ts`
 - [ ] `src/matrix/monitor/provider.ts`
-- [ ] `src/matrix/monitor/allow-list.ts`
+- [x] `src/matrix/monitor/allow-list.ts`
 - [x] `src/matrix/monitor/context.ts`
 - [x] `src/matrix/monitor/types.ts`
 - [ ] `src/matrix/monitor/events/index.ts`
@@ -359,6 +359,7 @@
 - [x] P1.14: Add user/room info actions - getMatrixUserProfile, getMatrixRoomMembers, getMatrixRoomInfo
 - [x] P1.15: Create `src/matrix/monitor/types.ts` with MonitorMatrixOpts, MatrixReactionEvent, MatrixMemberEvent, MatrixRoomEvent, MatrixTypingEvent, MatrixRedactionEvent types
 - [x] P1.16: Create `src/matrix/monitor/context.ts` with createMatrixMonitorContext() - client ref, account config, runtime, bot userId, allowFrom, room histories, dedupe cache, session key resolution, room/user info caching
+- [x] P1.17: Create `src/matrix/monitor/allow-list.ts` with normalizeMatrixAllowList, isMatrixUserAllowed, isMatrixRoomAllowed, resolveMatrixRoomConfig, resolveMatrixShouldRequireMention, isMatrixRoomUserAllowed, shouldEmitMatrixReactionNotification, isMatrixRoomAllowedByPolicy
 
 ---
 
