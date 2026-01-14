@@ -181,7 +181,7 @@
   - Handle room upgrades (tombstone)
 
 ### P1.23: Typing Event Handler (Optional)
-- [ ] Create `src/matrix/monitor/events/typing.ts` with handleMatrixTypingEvent()
+- [x] Create `src/matrix/monitor/events/typing.ts` with registerMatrixTypingEvents()
 
 ### P1.24: Message Handler Factory
 - [ ] Create `src/matrix/monitor/message-handler/index.ts` with createMatrixMessageHandler()
@@ -319,7 +319,7 @@
 - [x] `src/matrix/monitor/events/reactions.ts`
 - [x] `src/matrix/monitor/events/members.ts`
 - [x] `src/matrix/monitor/events/rooms.ts`
-- [ ] `src/matrix/monitor/events/typing.ts`
+- [x] `src/matrix/monitor/events/typing.ts`
 - [ ] `src/matrix/monitor/message-handler/index.ts`
 - [ ] `src/matrix/monitor/message-handler/preflight.ts`
 - [ ] `src/matrix/monitor/message-handler/process.ts`
@@ -369,6 +369,7 @@
 - [x] P1.20: Create `src/matrix/monitor/events/reactions.ts` with registerMatrixReactionEvents() - handles m.reaction events via Room.timeline, filters by reactionNotifications mode (off/all/own/allowlist), emits system event notifications with actor display names, room labels, and proper session key routing. Updated events/index.ts to import from separate file.
 - [x] P1.21: Create `src/matrix/monitor/events/members.ts` with registerMatrixMemberEvents() - handles RoomMemberEvent.Membership for membership changes (join, leave, ban, invite), bot invite detection, debug logging for membership transitions. Extracted from inline function in events/index.ts following the pattern of messages.ts and reactions.ts.
 - [x] P1.22: Create `src/matrix/monitor/events/rooms.ts` with registerMatrixRoomEvents() - handles RoomStateEvent.Events for room tombstones (m.room.tombstone), room creation (m.room.create), alias changes (m.room.canonical_alias), and name changes (m.room.name). Extracted from inline function in events/index.ts following the pattern of messages.ts, reactions.ts, and members.ts.
+- [x] P1.23: Create `src/matrix/monitor/events/typing.ts` with registerMatrixTypingEvents() - handles RoomMemberEvent.Typing for incoming typing indicators from other users, logs typing start/stop for debugging, filters out bot's own typing events. Updated events/index.ts to import and register typing handler.
 
 ---
 

@@ -1500,3 +1500,242 @@ Commit: `4e2fa79bb` pushed to `origin/matrix`
 
 [0;32m=== Build Iteration 20 ===[0m
 
+I'll start by orienting myself with the context and checking the current state of the implementation plan.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 48 incomplete tasks. Let me find the first incomplete task (highest priority):
+    [Bash]
+The next task is **P1.20: Create `src/matrix/monitor/events/reactions.ts`**. Let me look at the existing code patterns to understand how to implement this. I'll check the messages.ts implementation and the Slack reactions pattern.
+    [Read]
+    [Read]
+    [Read]
+The files are in the parent directory. Let me check the correct paths:
+    [Glob]
+Good, the matrix files are in `../src/matrix/`. Let me read the existing files for context:
+    [Read]
+    [Read]
+    [Read]
+Now let me check the Slack reactions handler for the pattern reference:
+    [Read]
+    [Read]
+Now let me check how the Slack allow-list handles reaction notifications to understand the pattern better:
+    [Grep]
+    [Read]
+    [Read]
+Now let me check the room-config.ts file that has the resolveMatrixRoomLabel helper:
+    [Read]
+    [Read]
+I see! There's already inline reaction handling in `index.ts` as part of the `registerReactionEvents` function. However, the task asks to create a **separate file** `reactions.ts` following the Slack pattern. This will make the code more modular and maintainable.
+
+Let me create the `reactions.ts` file with proper implementation:
+    [Write]
+Now I need to update the `index.ts` to use the new separate file instead of the inline handler:
+    [Edit]
+    [Read]
+Now let me update the index.ts to use the new separate reactions.ts file and remove the inline handler:
+    [Edit]
+Now I need to replace the inline `registerReactionEvents` call with `registerMatrixReactionEvents`:
+    [Edit]
+Now I need to remove the inline `registerReactionEvents` function since it's been moved to the separate file:
+    [Edit]
+Now let me verify the TypeScript syntax by running the type check:
+    [Bash]
+There are several TypeScript errors, but they are pre-existing issues unrelated to the reactions.ts file I just created. Let me check if there are any errors specific to the reactions.ts file:
+    [Bash]
+No errors related to reactions.ts. The errors are in other pre-existing files. Let me also verify the index.ts file compiles correctly:
+    [Bash]
+No errors in the files I created/modified. Now let me update the IMPLEMENTATION_PLAN.md to mark the task complete:
+    [Read]
+Now I'll update the IMPLEMENTATION_PLAN.md to mark P1.20 as complete and update the file checklist:
+    [Edit]
+    [Edit]
+Now let me add this to the Completed Tasks section:
+    [Edit]
+Now let me commit and push:
+    [Bash]
+    [Bash]
+    [Bash]
+Task completed successfully.
+
+**Summary:**
+- Created `src/matrix/monitor/events/reactions.ts` with `registerMatrixReactionEvents()` function
+- The handler:
+  - Handles `m.reaction` events from `Room.timeline`
+  - Filters by `reactionNotifications` mode (`off`/`all`/`own`/`allowlist`)
+  - Skips historical events and own reactions
+  - Checks room permissions before processing
+  - Looks up target message author for "own" mode filtering
+  - Uses `shouldEmitMatrixReactionNotification()` from `allow-list.ts` for policy checking
+  - Emits system event notifications with actor display names, room labels, and proper session key routing
+- Updated `src/matrix/monitor/events/index.ts` to import from the new separate file instead of using inline handler
+- Marked P1.20 as complete in `IMPLEMENTATION_PLAN.md`
+
+Committed: `f3c7c62d2` and pushed to `origin/matrix`.
+--- 178.1s, 35 turns ---
+
+[0;32m=== Build Iteration 21 ===[0m
+
+I'll start by orienting myself with the context and checking the current state of the implementation plan.
+    [Read]
+    [Read]
+Now let me check the number of incomplete tasks:
+    [Bash]
+There are 46 incomplete tasks. The first incomplete task is **P1.21: Member Event Handler** - Create `src/matrix/monitor/events/members.ts`.
+
+Let me examine the existing event handler patterns (messages.ts and reactions.ts) to follow the same structure:
+    [Read]
+    [Read]
+    [Read]
+    [Read]
+The files are in the parent `src/matrix/` directory. Let me check the correct path:
+    [Glob]
+Now let me read the existing event handlers to follow the pattern:
+    [Read]
+    [Read]
+    [Read]
+    [Read]
+Interesting. I can see that `events/index.ts` already has inline implementations for `registerMemberEvents` and `registerRoomEvents`. According to the IMPLEMENTATION_PLAN.md, the tasks P1.21 and P1.22 ask for these to be in separate files (`events/members.ts` and `events/rooms.ts`).
+
+Looking at the current state:
+1. The member handler is already implemented inline in `events/index.ts`
+2. The room handler is already implemented inline in `events/index.ts`
+
+The task is to refactor these into separate files following the pattern used for messages.ts and reactions.ts. Let me create `events/members.ts` first (task P1.21).
+    [Write]
+Now I need to update `events/index.ts` to import from the new file instead of using the inline implementation:
+    [Edit]
+Now update the call to `registerMemberEvents` to use the new imported function:
+    [Edit]
+Now I need to remove the inline `registerMemberEvents` function since it's now in a separate file:
+    [Edit]
+Now let me validate the TypeScript compiles correctly:
+    [Bash]
+The type errors are pre-existing issues not related to my change. Let me verify my specific changes compile by checking the member events file alone:
+    [Bash]
+The errors are due to running tsc without the project config. Let me use the proper build command:
+    [Bash]
+No errors in my changes. Let me verify the complete file looks correct:
+    [Read]
+The file looks good. Now let me update the IMPLEMENTATION_PLAN.md to mark this task as complete:
+    [Edit]
+Update the file checklist:
+    [Edit]
+Now add to the Completed Tasks section:
+    [Edit]
+Now let me commit and push these changes:
+    [Bash]
+    [Bash]
+    [Bash]
+Task P1.21 complete. Created `src/matrix/monitor/events/members.ts` with `registerMatrixMemberEvents()` function that:
+- Handles `RoomMemberEvent.Membership` events for membership changes (join, leave, ban, invite)
+- Detects bot invites for potential auto-join logic
+- Logs membership transitions for debugging
+- Extracted from inline function in `events/index.ts` following the pattern of `messages.ts` and `reactions.ts`
+
+Committed and pushed: `d84e50d55`
+--- 131.8s, 27 turns ---
+
+[0;32m=== Build Iteration 22 ===[0m
+
+I'll start by orienting myself with the context and plan files.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 44 incomplete tasks. Let me find the highest priority incomplete task (first `- [ ]` entry):
+    [Bash]
+The first incomplete task is **P1.22: Create `src/matrix/monitor/events/rooms.ts`** with:
+- Handle room invites
+- Handle room upgrades (tombstone)
+
+Let me first look at the existing event handlers to understand the patterns used:
+    [Read]
+    [Read]
+    [Read]
+The files are in the parent directory. Let me check the correct location:
+    [Read]
+    [Read]
+    [Read]
+I can see that `registerRoomEvents` is currently defined inline in `events/index.ts` (lines 60-85). According to the IMPLEMENTATION_PLAN, I need to extract this to a separate file `events/rooms.ts` following the same pattern as the other event handlers (messages.ts, reactions.ts, members.ts).
+
+Let me also look at the reactions.ts for reference on the pattern:
+    [Read]
+    [Read]
+Now I have a clear understanding of the patterns used. The task is to:
+1. Create `src/matrix/monitor/events/rooms.ts` with `registerMatrixRoomEvents()` function
+2. Extract the inline `registerRoomEvents` from `events/index.ts`
+3. Add room invite handling and room upgrade (tombstone) handling
+
+Let me create the `rooms.ts` file following the same pattern as the other event handlers:
+    [Write]
+Now I need to update `events/index.ts` to import from the new file and remove the inline implementation:
+    [Edit]
+Now I need to replace the `registerRoomEvents` call with `registerMatrixRoomEvents` and remove the inline function:
+    [Edit]
+Now let me validate the TypeScript syntax:
+    [Bash]
+There are existing type errors in the codebase, but these are not related to the new `rooms.ts` file I just created. The errors are about:
+1. Missing `matrix` entry in various channel registries (which is expected - these are other tasks in the implementation plan)
+2. Issues with `accounts.ts` and `client.ts` that existed before
+
+Let me verify that my changes specifically don't introduce new errors by checking if the rooms.ts file compiles:
+    [Bash]
+I have type errors in my `rooms.ts` file. The issue is with my type declarations for the event parameter. Let me look at how the existing inline function does it and fix the types:
+    [Grep]
+The issue is my attempted inference of the event type from `RoomStateEvent.Events` is not working. Let me check how the matrix-js-sdk types work by looking at how other files import types:
+    [Grep]
+Let me check what types are available for the event parameter by looking at how the matrix-js-sdk SDK exports the MatrixEvent type:
+    [Grep]
+Let me look at how the messages.ts file handles the event type since it also uses `RoomEvent.Timeline`:
+    [Read]
+I see. In `messages.ts`, the event type isn't explicitly typed - the callback parameters just receive what the SDK passes. The issue with my code is that I'm trying to use `Parameters<Parameters<typeof RoomStateEvent.Events>[1]>[0]` which doesn't work as expected.
+
+The simplest solution is to just use `any` for the event type, which is what the inline handler effectively did, or I can use the actual MatrixEvent type from matrix-js-sdk. Let me fix the `rooms.ts` file:
+    [Read]
+The issue is the complex type inference for `RoomStateEvent.Events`. Let me simplify by using the actual type from matrix-js-sdk. Let me check what's exported:
+    [Bash]
+    [Bash]
+I can import `MatrixEvent` from `matrix-js-sdk`. Let me fix the rooms.ts file:
+    [Write]
+Now let me verify the changes compile correctly:
+    [Bash]
+The changes compile correctly. Now let me update the IMPLEMENTATION_PLAN.md to mark this task as complete:
+    [Read]
+    [Edit]
+Now let me also update the file checklist:
+    [Read]
+    [Edit]
+Now let me also add this to the Completed Tasks section:
+    [Read]
+    [Edit]
+Now let me commit and push the changes:
+    [Bash]
+    [Bash]
+The commit succeeded (the error is unrelated to git). Now let me push:
+    [Bash]
+Task completed. I have:
+
+1. **Created `src/matrix/monitor/events/rooms.ts`** with `registerMatrixRoomEvents()` function that:
+   - Handles room tombstones (`m.room.tombstone`) for room upgrades with replacement room detection
+   - Handles room creation events (`m.room.create`) with creator, version, and predecessor info
+   - Handles room alias changes (`m.room.canonical_alias`)
+   - Handles room name changes (`m.room.name`)
+   - Follows the established pattern from messages.ts, reactions.ts, and members.ts
+
+2. **Updated `src/matrix/monitor/events/index.ts`** to:
+   - Import `registerMatrixRoomEvents` from the new file
+   - Remove the inline `registerRoomEvents` function
+   - Call `registerMatrixRoomEvents({ ctx })` instead
+
+3. **Updated `matrix/IMPLEMENTATION_PLAN.md`** to:
+   - Mark P1.22 as complete
+   - Update file checklist
+   - Add entry to Completed Tasks section
+
+4. **Committed and pushed** the changes to `origin/matrix`
+--- 240.1s, 36 turns ---
+
+[0;32m=== Build Iteration 23 ===[0m
+

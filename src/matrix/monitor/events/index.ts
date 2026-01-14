@@ -11,6 +11,7 @@ import { registerMatrixMemberEvents } from "./members.js";
 import { registerMatrixMessageEvents } from "./messages.js";
 import { registerMatrixReactionEvents } from "./reactions.js";
 import { registerMatrixRoomEvents } from "./rooms.js";
+import { registerMatrixTypingEvents } from "./typing.js";
 import type { MatrixMessageHandler } from "./types.js";
 
 // Re-export types for convenience
@@ -48,6 +49,7 @@ export function registerMatrixEvents(params: RegisterMatrixEventsParams): void {
   registerMatrixReactionEvents({ ctx });
   registerMatrixMemberEvents({ ctx });
   registerMatrixRoomEvents({ ctx });
+  registerMatrixTypingEvents({ ctx });
 
   ctx.logger.debug("matrix event handlers registered");
 }
