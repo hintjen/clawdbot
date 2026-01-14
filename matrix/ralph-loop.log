@@ -1309,3 +1309,194 @@ Changes committed and pushed to `origin/matrix`.
 
 [0;32m=== Build Iteration 18 ===[0m
 
+I'll start by orienting myself with the context and checking for incomplete tasks.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 52 incomplete tasks. Let me find the first incomplete task:
+    [Bash]
+The first incomplete task is **P1.18: Create `src/matrix/monitor/events/index.ts` with registerMatrixEvents()**.
+
+Let me first examine existing event handling patterns from other providers and check what files already exist in the matrix monitor directory.
+    [Glob]
+    [Glob]
+The matrix files are in the parent directory, not in the matrix/ working directory. Let me check what exists:
+    [Glob]
+Good. Now let me examine the Slack events index pattern and read the context file to understand the monitor context type:
+    [Task]
+    [Read]
+    [Read]
+    [Glob]
+    [Bash]
+    [Read]
+    [Read]
+    [Read]
+    [Read]
+    [Read]
+    [Read]
+Now I have a good understanding of the patterns. Let me also look at how Matrix SDK events work to understand the event names:
+    [Read]
+Now let me check the matrix-js-sdk event types to understand how to register event handlers:
+    [Grep]
+Now I have all the context I need. Let me create the `src/matrix/monitor/events/index.ts` file that will register all Matrix events. I'll create the directory structure and the file:
+    [Bash]
+    [Write]
+Now let me validate the TypeScript syntax:
+    [Bash]
+These are pre-existing errors from the wider codebase, not from my new file. Let me use the project's build command to check:
+    [Bash]
+    [Bash]
+    [Bash]
+The build shows pre-existing errors (from the registry and other files needing matrix added), but importantly there are NO errors from my new `src/matrix/monitor/events/index.ts` file. The errors shown are from:
+1. `dock.ts`, `plugins/load.ts`, `plugins/outbound/load.ts` - missing matrix plugin registration (these are other tasks in the implementation plan)
+2. `accounts.ts` - pre-existing matrix integration issues  
+3. `client.ts` - pre-existing type issues
+
+Let me specifically check if there are any errors in my new file:
+    [Bash]
+No errors from my new file. Now let me update the `IMPLEMENTATION_PLAN.md` to mark the task as complete:
+    [Read]
+    [Edit]
+Now let me also update the file checklist section:
+    [Grep]
+    [Edit]
+Now let me add an entry to the Completed Tasks section:
+    [Grep]
+    [Read]
+    [Edit]
+Now let me commit and push the changes:
+    [Bash]
+    [Bash]
+    [Bash]
+Task complete. I created `src/matrix/monitor/events/index.ts` with `registerMatrixEvents()` - the central entry point for Matrix event handler registration. It follows the Slack provider pattern with inline handlers for:
+
+- **Messages**: `Room.timeline` events filtered for `m.room.message`, with dedupe, bot self-filtering, and non-blocking dispatch
+- **Reactions**: `m.reaction` events with reaction mode filtering (off/own/all/allowlist)
+- **Members**: `RoomMemberEvent.Membership` for join/leave/invite tracking
+- **Rooms**: `RoomStateEvent.Events` for tombstone handling (room upgrades)
+
+Changes committed and pushed to `origin/matrix`.
+--- 192.1s, 30 turns ---
+
+[0;32m=== Build Iteration 19 ===[0m
+
+I'll start by orienting myself with the plan and checking for completion status.
+    [Read]
+    [Read]
+    [Bash]
+There are 50 incomplete tasks. The first incomplete task is **P1.19: Message Event Handler** - Create `src/matrix/monitor/events/messages.ts`.
+
+Let me first check the existing event handler patterns in the codebase, looking at how Discord/Slack handle messages, and also review the existing `events/index.ts` that was just created.
+    [Read]
+    [Glob]
+    [Glob]
+Let me check the actual path structure - the files should be in the parent src directory.
+    [Glob]
+    [Glob]
+    [Glob]
+    [Read]
+I see that the `events/index.ts` file already contains inline implementations for all the event handlers (messages, reactions, members, rooms) - they're implemented as internal functions rather than in separate files. Looking at the implementation plan task P1.19, it says to create `src/matrix/monitor/events/messages.ts` as a separate file.
+
+However, looking at the existing code, the inline implementation in `index.ts` already covers all the requirements for P1.19:
+- Handle Room.timeline events ✓
+- Filter m.room.message type ✓
+- Skip historical messages (toStartOfTimeline) ✓
+- Skip own messages (bot self-filter) ✓
+- Non-blocking dispatch to agent ✓
+
+This is a design decision: the current implementation keeps all handlers inline in `index.ts` rather than in separate files. This is actually fine and follows a consolidated pattern.
+
+Given this, I should update the implementation plan to mark P1.19-P1.23 as complete since the functionality is already implemented inline. Let me verify by checking what the Slack pattern looks like for their messages.ts to see if there's something additional needed.
+    [Read]
+Looking at the Slack implementation, the messages.ts file handles:
+1. Message changed events (with system event enqueuing)
+2. Message deleted events (with system event enqueuing)
+3. Thread broadcasts (with system event enqueuing)
+4. Regular messages (forwarding to handler)
+5. App mention events
+
+The current Matrix `events/index.ts` has basic message handling but is missing:
+1. Message edited events (`m.room.message` with `m.relates_to.m.replace`)
+2. Message redaction events (`m.room.redaction`)
+3. System event enqueuing for edits/deletes
+
+The implementation plan asks for separate files, but the current approach consolidates them into `index.ts`. Since the plan specifically asks for separate files (P1.19-P1.23), I should refactor the existing inline code into separate files for better maintainability and to follow the pattern established in the plan.
+
+However, looking more closely at the implementation plan, the key functionality for P1.19 is:
+- Handle Room.timeline events
+- Filter m.room.message type
+- Skip historical messages (toStartOfTimeline)
+- Skip own messages (bot self-filter)
+- Non-blocking dispatch to agent
+
+This is already done inline. The plan says to create `messages.ts` as a separate file. Let me extract the message handling logic into a separate `messages.ts` file and update `index.ts` to call it.
+    [Read]
+Now I understand the setup. The implementation already has:
+1. `events/index.ts` with inline handlers for messages, reactions, members, rooms
+2. `context.ts` with the shared state
+
+The implementation plan asks for separate files for each event handler type. Since the inline implementation already exists and works, I'll create the separate `messages.ts` file with the message handling logic extracted from `index.ts`, then update `index.ts` to use it.
+
+Let me create `src/matrix/monitor/events/messages.ts`:
+    [Write]
+Now I need to create the types file for the shared types, and the room-config helper. Let me check if `room-config.ts` exists and create the types file:
+    [Glob]
+    [Glob]
+    [Read]
+I need to create the `room-config.ts` helper and the `events/types.ts` file. Let me do that:
+    [Write]
+    [Write]
+Now I need to update the `events/index.ts` to import from the new `messages.ts` file instead of having the inline implementation. Let me update it:
+    [Edit]
+Now let me validate the TypeScript syntax:
+    [Bash]
+There are existing type errors in the codebase that are unrelated to my changes. Let me specifically check just the files I created:
+    [Bash]
+The type checking without the proper tsconfig is erroring on the whole codebase. Let me use the project's build command to validate:
+    [Bash]
+    [Bash]
+    [Bash]
+No errors in my new files. Let me verify the full build output for all matrix-related errors:
+    [Bash]
+The errors are in existing files (`accounts.ts` and `client.ts`), not in my new files. My new files (`messages.ts`, `types.ts`, `room-config.ts`) have no type errors.
+
+Now let me update the implementation plan to mark P1.19 as complete:
+    [Read]
+    [Edit]
+Now I need to update the File Checklist and Completed Tasks sections:
+    [Read]
+    [Edit]
+Now let me add to the Completed Tasks section:
+    [Read]
+    [Edit]
+Now let me commit and push the changes:
+    [Bash]
+    [Bash]
+    [Bash]
+Task P1.19 completed. I created:
+
+1. **`src/matrix/monitor/events/messages.ts`** - Matrix message event handler with:
+   - `registerMatrixMessageEvents()` - registers Room.timeline handler
+   - Filters for `m.room.message` events only
+   - Skips historical messages (initial sync backfill)
+   - Skips bot's own messages
+   - Deduplication check
+   - Handles message edits (`m.replace` relation type) with system events
+   - Handles redactions (deletions) with system events
+   - Non-blocking dispatch to message handler
+
+2. **`src/matrix/monitor/events/types.ts`** - Shared types:
+   - `MatrixMessageHandler` type for the message handler callback
+
+3. **`src/matrix/monitor/room-config.ts`** - Room configuration helpers:
+   - `resolveMatrixRoomLabel()` - human-readable room label
+   - `resolveMatrixRoomConfig()` - resolve room config from allowlist
+
+4. **Updated `src/matrix/monitor/events/index.ts`** - to import from the new messages module
+
+Commit: `4e2fa79bb` pushed to `origin/matrix`
+--- 282.1s, 35 turns ---
+
+[0;32m=== Build Iteration 20 ===[0m
+

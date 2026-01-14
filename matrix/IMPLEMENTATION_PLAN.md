@@ -165,7 +165,7 @@
   - Handle redactions (message deletions) with system event
 
 ### P1.20: Reaction Event Handler
-- [ ] Create `src/matrix/monitor/events/reactions.ts` with:
+- [x] Create `src/matrix/monitor/events/reactions.ts` with:
   - Handle m.reaction events
   - Check reactionNotifications setting
   - Emit reaction notifications if enabled
@@ -316,7 +316,7 @@
 - [x] `src/matrix/monitor/events/messages.ts`
 - [x] `src/matrix/monitor/events/types.ts`
 - [x] `src/matrix/monitor/room-config.ts`
-- [ ] `src/matrix/monitor/events/reactions.ts`
+- [x] `src/matrix/monitor/events/reactions.ts`
 - [ ] `src/matrix/monitor/events/members.ts`
 - [ ] `src/matrix/monitor/events/rooms.ts`
 - [ ] `src/matrix/monitor/events/typing.ts`
@@ -366,6 +366,7 @@
 - [x] P1.17: Create `src/matrix/monitor/allow-list.ts` with normalizeMatrixAllowList, isMatrixUserAllowed, isMatrixRoomAllowed, resolveMatrixRoomConfig, resolveMatrixShouldRequireMention, isMatrixRoomUserAllowed, shouldEmitMatrixReactionNotification, isMatrixRoomAllowedByPolicy
 - [x] P1.18: Create `src/matrix/monitor/events/index.ts` with registerMatrixEvents() - central entry point for event registration, includes inline handlers for messages, reactions, members, and rooms following Slack pattern
 - [x] P1.19: Create `src/matrix/monitor/events/messages.ts` with registerMatrixMessageEvents() - handles Room.timeline events, m.room.message filtering, historical message skipping, self-message filtering, non-blocking dispatch, edit handling with system events, redaction handling with system events. Also created `events/types.ts` for MatrixMessageHandler type and `room-config.ts` for resolveMatrixRoomLabel and resolveMatrixRoomConfig helpers.
+- [x] P1.20: Create `src/matrix/monitor/events/reactions.ts` with registerMatrixReactionEvents() - handles m.reaction events via Room.timeline, filters by reactionNotifications mode (off/all/own/allowlist), emits system event notifications with actor display names, room labels, and proper session key routing. Updated events/index.ts to import from separate file.
 
 ---
 
