@@ -215,7 +215,7 @@
 ## P1: Channel Plugin Integration
 
 ### P1.28: Index Exports
-- [ ] Create `src/matrix/index.ts` with all exports
+- [x] Create `src/matrix/index.ts` with all exports
 
 ### P1.29: Channel Plugin Definition
 - [ ] Create `src/channels/plugins/matrix.ts` with matrixChannelPlugin:
@@ -298,7 +298,7 @@
 ## File Checklist
 
 ### New Files (26+ files)
-- [ ] `src/matrix/index.ts`
+- [x] `src/matrix/index.ts`
 - [x] `src/matrix/accounts.ts`
 - [x] `src/matrix/actions.ts`
 - [x] `src/matrix/client.ts`
@@ -374,6 +374,7 @@
 - [x] P1.25: Create `src/matrix/monitor/message-handler/preflight.ts` with preflightMatrixMessage() - validates incoming messages before processing: filters bot's own messages, checks DM policy/allowlist for DMs, checks room policy/allowlist for rooms, handles pairing for unauthorized DM senders, checks mention requirements, resolves agent route, records channel activity, builds history entries.
 - [x] P1.26: Create `src/matrix/monitor/message-handler/process.ts` with processMatrixMessage() - extracts message content, builds agent envelope with history context, dispatches to agent via dispatchReplyWithBufferedBlockDispatcher, delivers replies via sendMessageMatrix with proper threading, handles typing indicators.
 - [x] P1.27: Create `src/matrix/monitor/provider.ts` with monitorMatrixProvider() - main entry point for Matrix provider: loads config via resolveMatrixAccount(), creates Matrix client, logs in (accessToken or password), creates monitor context, registers event handlers, starts sync loop, waits for shutdown signal.
+- [x] P1.28: Create `src/matrix/index.ts` with all exports - account management, actions (reactions, messages, read receipts, room management, user/room info), client lifecycle, message formatting, monitor provider, probe, send, token/credentials, types, and typing indicators.
 
 ---
 
@@ -415,4 +416,4 @@ P0.3-P0.5 (config) ────────────────────�
 ---
 
 *Generated from PLAN.md on 2026-01-14*
-*Last updated: 2026-01-13*
+*Last updated: 2026-01-14*
