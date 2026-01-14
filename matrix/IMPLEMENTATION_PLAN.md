@@ -28,7 +28,7 @@
 - [x] Create MatrixDmSchema in `src/config/zod-schema.providers-core.ts` (with superRefine for open policy)
 
 ### P0.4: Config Schema - Account Schema
-- [ ] Create MatrixAccountSchema in `src/config/zod-schema.providers-core.ts`
+- [x] Create MatrixAccountSchema in `src/config/zod-schema.providers-core.ts`
   - Connection: homeserver, userId, accessToken/password, deviceId
   - Policies: groupPolicy, historyLimit, dmHistoryLimit, dms
   - Features: replyToMode, reactionNotifications, reactionAllowlist
@@ -325,7 +325,7 @@
 ### Modified Files (5 files)
 - [x] `package.json` - add matrix-js-sdk
 - [x] `src/channels/registry.ts` - add "matrix" to order + meta
-- [ ] `src/config/zod-schema.providers-core.ts` - add Matrix schemas
+- [x] `src/config/zod-schema.providers-core.ts` - add Matrix schemas (MatrixRoomSchema, MatrixDmSchema, MatrixAccountSchema, MatrixConfigSchema)
 - [ ] `src/config/zod-schema.providers.ts` - add matrix to ChannelsSchema
 - [ ] `src/channels/plugins/index.ts` - register matrix plugin
 
@@ -337,6 +337,7 @@
 - [x] Add `dist/matrix/**` to package.json files array
 - [x] P0.2: Channel Registry - add "matrix" to CHAT_CHANNEL_ORDER, CHAT_CHANNEL_META, CHAT_CHANNEL_ALIASES
 - [x] P0.3: Create MatrixRoomSchema and MatrixDmSchema in `src/config/zod-schema.providers-core.ts`
+- [x] P0.4: Create MatrixAccountSchema and MatrixConfigSchema in `src/config/zod-schema.providers-core.ts`
 
 ---
 

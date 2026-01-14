@@ -393,6 +393,56 @@ export const MatrixDmSchema = z
     });
   });
 
+export const MatrixAccountSchema = z.object({
+  name: z.string().optional(),
+  capabilities: z.array(z.string()).optional(),
+  enabled: z.boolean().optional(),
+  commands: ProviderCommandsSchema,
+  // Connection
+  homeserver: z.string(),
+  userId: z.string(),
+  accessToken: z.string().optional(),
+  password: z.string().optional(),
+  deviceId: z.string().optional(),
+  // Policies
+  groupPolicy: GroupPolicySchema.optional().default("allowlist"),
+  historyLimit: z.number().int().min(0).optional(),
+  dmHistoryLimit: z.number().int().min(0).optional(),
+  dms: z.record(z.string(), DmConfigSchema.optional()).optional(),
+  // Limits
+  textChunkLimit: z.number().int().positive().optional(),
+  blockStreaming: z.boolean().optional(),
+  blockStreamingCoalesce: BlockStreamingCoalesceSchema.optional(),
+  mediaMaxMb: z.number().positive().optional(),
+  // Features
+  replyToMode: ReplyToModeSchema.optional(),
+  reactionNotifications: z.enum(["off", "own", "all", "allowlist"]).optional(),
+  reactionAllowlist: z.array(z.string()).optional(),
+  actions: z
+    .object({
+      reactions: z.boolean().optional(),
+      messages: z.boolean().optional(),
+      read: z.boolean().optional(),
+      pins: z.boolean().optional(),
+      memberInfo: z.boolean().optional(),
+      roomInfo: z.boolean().optional(),
+    })
+    .optional(),
+  dm: MatrixDmSchema.optional(),
+  rooms: z.record(z.string(), MatrixRoomSchema.optional()).optional(),
+}).superRefine((val, ctx) => {
+  if (!val.accessToken && !val.password) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Either accessToken or password is required",
+    });
+  }
+});
+
+export const MatrixConfigSchema = MatrixAccountSchema.extend({
+  accounts: z.record(z.string(), MatrixAccountSchema.optional()).optional(),
+});
+
 export const MSTeamsChannelSchema = z.object({
   requireMention: z.boolean().optional(),
   replyStyle: MSTeamsReplyStyleSchema.optional(),
