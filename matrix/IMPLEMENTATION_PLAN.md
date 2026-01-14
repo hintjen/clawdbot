@@ -244,7 +244,7 @@
 ### P2.1: Unit Tests - Core
 - [x] Create `src/matrix/accounts.test.ts`
 - [x] Create `src/matrix/format.test.ts` - markdown/HTML conversion
-- [ ] Create `src/matrix/token.test.ts`
+- [x] Create `src/matrix/token.test.ts`
 
 ### P2.2: Unit Tests - Actions
 - [ ] Create `src/matrix/actions.test.ts` - action function tests
@@ -386,6 +386,7 @@
 - [x] P2.7: Create `src/channels/plugins/outbound/matrix.ts` for CLI send support.
 - [x] P2.1: Create `src/matrix/accounts.test.ts` with unit tests for listMatrixAccountIds, resolveDefaultMatrixAccountId, resolveMatrixAccount, listEnabledMatrixAccounts (25 tests).
 - [x] P2.1: Create `src/matrix/format.test.ts` with unit tests for markdownToMatrixHtml, matrixHtmlToPlaintext, formatMatrixReply, extractMatrixMentions, containsMatrixMention (68 tests).
+- [x] P2.1: Create `src/matrix/token.test.ts` with unit tests for normalizeMatrixCredential, normalizeMatrixAccessToken, normalizeMatrixPassword, resolveMatrixCredentials (41 tests).
 
 ---
 
