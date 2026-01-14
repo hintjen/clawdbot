@@ -152,7 +152,7 @@
   - resolveMatrixShouldRequireMention(roomConfig)
 
 ### P1.18: Event Handler Registration
-- [ ] Create `src/matrix/monitor/events/index.ts` with registerMatrixEvents()
+- [x] Create `src/matrix/monitor/events/index.ts` with registerMatrixEvents()
 
 ### P1.19: Message Event Handler
 - [ ] Create `src/matrix/monitor/events/messages.ts` with:
@@ -310,7 +310,7 @@
 - [x] `src/matrix/monitor/allow-list.ts`
 - [x] `src/matrix/monitor/context.ts`
 - [x] `src/matrix/monitor/types.ts`
-- [ ] `src/matrix/monitor/events/index.ts`
+- [x] `src/matrix/monitor/events/index.ts`
 - [ ] `src/matrix/monitor/events/messages.ts`
 - [ ] `src/matrix/monitor/events/reactions.ts`
 - [ ] `src/matrix/monitor/events/members.ts`
@@ -360,6 +360,7 @@
 - [x] P1.15: Create `src/matrix/monitor/types.ts` with MonitorMatrixOpts, MatrixReactionEvent, MatrixMemberEvent, MatrixRoomEvent, MatrixTypingEvent, MatrixRedactionEvent types
 - [x] P1.16: Create `src/matrix/monitor/context.ts` with createMatrixMonitorContext() - client ref, account config, runtime, bot userId, allowFrom, room histories, dedupe cache, session key resolution, room/user info caching
 - [x] P1.17: Create `src/matrix/monitor/allow-list.ts` with normalizeMatrixAllowList, isMatrixUserAllowed, isMatrixRoomAllowed, resolveMatrixRoomConfig, resolveMatrixShouldRequireMention, isMatrixRoomUserAllowed, shouldEmitMatrixReactionNotification, isMatrixRoomAllowedByPolicy
+- [x] P1.18: Create `src/matrix/monitor/events/index.ts` with registerMatrixEvents() - central entry point for event registration, includes inline handlers for messages, reactions, members, and rooms following Slack pattern
 
 ---
 

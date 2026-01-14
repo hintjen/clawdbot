@@ -1251,3 +1251,61 @@ Changes committed and pushed to origin/matrix. Exiting for next iteration.
 
 [0;32m=== Build Iteration 17 ===[0m
 
+I'll start by reading the PLAN.md and IMPLEMENTATION_PLAN.md files to understand the current state and find the next task to implement.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 54 incomplete tasks. The next task is **P1.17: AllowFrom Filtering** - Create `src/matrix/monitor/allow-list.ts`.
+
+Let me first check the existing pattern from Slack for reference:
+    [Glob]
+    [Glob]
+Let me search for allow-list or allowFrom patterns more broadly:
+    [Grep]
+Let me read the Discord allow-list.ts as a reference:
+    [Read]
+    [Read]
+I can see that `context.ts` already contains some allowlist functionality inline. The task P1.17 wants me to extract and expand these into a dedicated `allow-list.ts` module. Let me also check the config types for Matrix to understand the full schema:
+    [Read]
+Now I have a good understanding of the requirements. Let me create the `src/matrix/monitor/allow-list.ts` module with the following functions according to the plan:
+
+1. `normalizeMatrixAllowList(raw)` - normalize user IDs
+2. `isMatrixUserAllowed(userId, allowFrom)` - check DM allowlist
+3. `isMatrixRoomAllowed(roomId, config)` - check room allowlist
+4. `resolveMatrixRoomConfig(roomId, config)` - get per-room settings
+5. `resolveMatrixShouldRequireMention(roomConfig)` - check mention requirement
+    [Write]
+Now let me validate the TypeScript syntax:
+    [Bash]
+The errors are from type conflicts in dependencies, not from my code. Let me check if there are errors specifically in the matrix files:
+    [Bash]
+The errors are in other files, not in `allow-list.ts`. My new file has no type errors. Now let me update the IMPLEMENTATION_PLAN.md to mark this task as complete:
+    [Read]
+    [Edit]
+Now I also need to update the File Checklist section:
+    [Read]
+    [Edit]
+Now let me also add the task to the Completed Tasks section:
+    [Read]
+    [Edit]
+Now let me commit and push the changes:
+    [Bash]
+    [Bash]
+    [Bash]
+Task completed. I've implemented **P1.17: AllowFrom Filtering** by creating `src/matrix/monitor/allow-list.ts` with:
+
+- `normalizeMatrixAllowList()` - normalize user IDs with wildcard support (`*` for all, `*:domain` for domain)
+- `isMatrixUserAllowed()` - check DM allowlist by policy
+- `isMatrixRoomAllowed()` - check room allowlist by group policy
+- `resolveMatrixRoomConfig()` - get per-room settings by ID/alias/name
+- `resolveMatrixShouldRequireMention()` - check mention requirements
+- `isMatrixRoomUserAllowed()` - check per-room user allowlist
+- `shouldEmitMatrixReactionNotification()` - reaction notification filtering
+- `isMatrixRoomAllowedByPolicy()` - internal policy helper
+
+Changes committed and pushed to `origin/matrix`.
+--- 138.8s, 22 turns ---
+
+[0;32m=== Build Iteration 18 ===[0m
+
