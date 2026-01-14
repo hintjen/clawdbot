@@ -841,6 +841,7 @@
           "channels/grammy",
           "channels/discord",
           "channels/slack",
+          "channels/matrix",
           "channels/signal",
           "channels/imessage",
           "channels/msteams",

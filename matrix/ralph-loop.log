@@ -2618,3 +2618,138 @@ All 99 tests pass. Changes committed and pushed to `origin/matrix`.
 
 [0;32m=== Build Iteration 35 ===[0m
 
+I'll start by orienting myself with the context and checking for incomplete tasks.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 17 incomplete tasks. Let me identify the first one:
+    [Bash]
+The next task is **P2.3: Create `src/matrix/monitor/message-handler.test.ts` - message processing**.
+
+Let me first examine the existing test files and the message handler code to understand what to test:
+    [Read]
+    [Read]
+    [Read]
+Let me also look at some existing test files in the matrix module to understand testing patterns:
+    [Read]
+    [Read]
+Now I have a good understanding of the codebase. Let me also look at the types file to understand the event types:
+    [Read]
+Now I have all the context I need. Let me create the `message-handler.test.ts` file with comprehensive unit tests for the message handler components. The tests will focus on:
+
+1. `createMatrixMessageHandler` - the factory function
+2. `preflightMatrixMessage` - preflight checks
+3. `processMatrixMessage` - the process helpers (buildSenderLabel, buildRoomLabel)
+    [Write]
+Now let me run the tests to make sure they pass:
+    [Bash]
+    [Bash]
+    [Bash]
+    [Bash]
+All 38 tests pass. Now let me also run the TypeScript type check to ensure there are no type errors:
+    [Bash]
+There are pre-existing type errors in `client.ts` that are not related to my changes. Let me verify the test file I created has no type errors:
+    [Bash]
+No type errors in my test file. Now let me update the IMPLEMENTATION_PLAN.md to mark this task as complete:
+    [Read]
+    [Edit]
+Now let me also add the task to the Completed Tasks section at the bottom:
+    [Read]
+    [Edit]
+Now let me commit and push the changes:
+    [Bash]
+    [Bash]
+    [Bash]
+Task completed successfully. 
+
+**Summary:**
+- Created `src/matrix/monitor/message-handler.test.ts` with 38 unit tests covering:
+  - `createMatrixMessageHandler` factory function
+  - `preflightMatrixMessage` validation including:
+    - Bot self-message filtering
+    - Duplicate message detection
+    - DM policy checks (disabled, open, pairing)
+    - Room policy checks (disabled, open, allowlist)
+    - Mention requirement checks
+    - Empty message filtering
+    - History entry building
+    - Command authorization
+    - Agent route resolution
+    - Channel activity recording
+- Updated `IMPLEMENTATION_PLAN.md` to mark the task complete
+- Committed and pushed to origin/matrix (commit 7db219b47)
+--- 198.7s, 25 turns ---
+
+[0;32m=== Build Iteration 36 ===[0m
+
+I'll start by orienting myself with the context and checking the current state of the implementation plan.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks.
+    [Bash]
+There are 16 incomplete tasks. Let me find the first one to work on.
+    [Bash]
+The first incomplete task is P2.4: "Create `src/matrix/monitor.test.ts` - provider integration". Let me examine the existing test files and the provider to understand the patterns.
+    [Read]
+    [Read]
+Now let me look at existing provider tests from other channels to understand the pattern for integration tests.
+    [Glob]
+    [Glob]
+Let me look for integration tests in the discord and slack directories.
+    [Bash]
+Let me look at the existing matrix tests to understand the testing patterns used.
+    [Read]
+Now I have a good understanding of the testing patterns. Let me look at the provider more closely to understand what integration tests would be useful, particularly testing the `monitorMatrixProvider` function.
+    [Read]
+Now I have a clear picture of what to test. The `monitorMatrixProvider` is the main integration point. Let me create the monitor integration test file.
+    [TodoWrite]
+    [Write]
+Now let me run the tests to make sure they pass.
+    [Bash]
+    [Bash]
+    [Bash]
+There's one failing test - the `loadConfig` spy is being called in other tests. The issue is that the `loadConfigSpy` is getting call counts from other tests due to module caching. Let me fix this test.
+    [Edit]
+Now let me run the tests again.
+    [Bash]
+All 27 tests pass. Now let me verify TypeScript compilation.
+    [Bash]
+I see there are existing TypeScript errors in the client.ts file - these pre-exist my changes and are not related to the new test file I created. Let me check if my new file specifically compiles correctly.
+    [Bash]
+The TypeScript errors are pre-existing errors in the codebase unrelated to my changes. This happens when running `tsc` without the correct tsconfig. Let me use the project's build command instead to validate.
+    [Bash]
+I see - there are existing TypeScript errors in `client.ts` that pre-exist my work. These are existing issues with the matrix-js-sdk types (the matrix SDK's types changed and the code hasn't been updated yet). My new test file doesn't introduce any new errors. Let me verify that by checking if the errors exist before my change.
+    [Bash]
+    [Bash]
+Good - my only new file is `src/matrix/monitor.test.ts`. The existing TypeScript errors in `client.ts` are pre-existing issues unrelated to my change.
+
+Now let me update the IMPLEMENTATION_PLAN.md to mark this task as complete.
+    [Read]
+    [Edit]
+Now I need to add the completed task entry in the Completed Tasks section at the bottom of the file.
+    [Read]
+    [Edit]
+Now let me commit and push the changes.
+    [Bash]
+    [Bash]
+    [TodoWrite]
+Task completed. I have:
+
+1. **Created `src/matrix/monitor.test.ts`** with 27 integration tests covering:
+   - Startup and initialization (client creation, login, sync loop)
+   - Error handling (disabled account, missing homeserver/userId/credentials, login failure, sync failure)
+   - Configuration options (accountId, config override, accessToken/password override, abortSignal, custom runtime)
+   - Event handler registration (Room.timeline, RoomMember.membership, RoomMember.typing, RoomState.events)
+   - Policy configuration (disabled DM, allowlist group policy, disabled group policy)
+   - Provider lifecycle (abort signal completion, log messages)
+
+2. **Updated `IMPLEMENTATION_PLAN.md`** to mark the task as complete
+
+3. **Committed and pushed** the changes to the `matrix` branch
+
+All 27 tests pass. The pre-existing TypeScript compilation errors in `client.ts` are unrelated to this change (they are matrix-js-sdk type compatibility issues that existed before this task).
+--- 221.3s, 31 turns ---
+
+[0;32m=== Build Iteration 37 ===[0m
+

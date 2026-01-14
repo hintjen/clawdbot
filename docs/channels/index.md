@@ -15,6 +15,7 @@ Text is supported everywhere; media and reactions vary by channel.
 - [Telegram](/channels/telegram) — Bot API via grammY; supports groups.
 - [Discord](/channels/discord) — Discord Bot API + Gateway; supports servers, channels, and DMs.
 - [Slack](/channels/slack) — Bolt SDK; workspace apps.
+- [Matrix](/channels/matrix) — matrix-js-sdk; federated, E2EE-capable protocol (Element, etc.).
 - [Signal](/channels/signal) — signal-cli; privacy-focused.
 - [iMessage](/channels/imessage) — macOS only; native integration.
 - [Microsoft Teams](/channels/msteams) — Bot Framework; enterprise support.
