@@ -44,7 +44,7 @@
 ## P1: Core Types & Client (src/matrix/)
 
 ### P1.1: Types Module
-- [ ] Create `src/matrix/types.ts` with:
+- [x] Create `src/matrix/types.ts` with:
   - MatrixMessageEvent type
   - MatrixActionOpts type
   - MatrixRoomInfo type
@@ -302,7 +302,7 @@
 - [ ] `src/matrix/probe.ts`
 - [ ] `src/matrix/send.ts`
 - [ ] `src/matrix/token.ts`
-- [ ] `src/matrix/types.ts`
+- [x] `src/matrix/types.ts`
 - [ ] `src/matrix/typing.ts`
 - [ ] `src/matrix/monitor/provider.ts`
 - [ ] `src/matrix/monitor/allow-list.ts`
@@ -339,6 +339,7 @@
 - [x] P0.3: Create MatrixRoomSchema and MatrixDmSchema in `src/config/zod-schema.providers-core.ts`
 - [x] P0.4: Create MatrixAccountSchema and MatrixConfigSchema in `src/config/zod-schema.providers-core.ts`
 - [x] P0.5: Import MatrixConfigSchema and add matrix to ChannelsSchema in `src/config/zod-schema.providers.ts`
+- [x] P1.1: Create `src/matrix/types.ts` with MatrixMessageEvent, MatrixActionOpts, MatrixRoomInfo, MatrixUserProfile, MatrixFile, MatrixMessageSummary types
 
 ---
 
