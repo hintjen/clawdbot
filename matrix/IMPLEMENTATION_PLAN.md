@@ -79,7 +79,7 @@
   - containsMatrixMention(body, userId) - check for specific mention
 
 ### P1.6: Typing Indicators
-- [ ] Create `src/matrix/typing.ts` with:
+- [x] Create `src/matrix/typing.ts` with:
   - sendMatrixTyping({ client, roomId, typing, timeoutMs })
   - stopMatrixTyping({ client, roomId })
 
@@ -305,7 +305,7 @@
 - [ ] `src/matrix/send.ts`
 - [x] `src/matrix/token.ts`
 - [x] `src/matrix/types.ts`
-- [ ] `src/matrix/typing.ts`
+- [x] `src/matrix/typing.ts`
 - [ ] `src/matrix/monitor/provider.ts`
 - [ ] `src/matrix/monitor/allow-list.ts`
 - [ ] `src/matrix/monitor/context.ts`
@@ -348,6 +348,7 @@
 - [x] Add types.matrix.js export to `src/config/types.ts`
 - [x] P1.4: Create `src/matrix/client.ts` with createMatrixClient(), loginMatrix(), startMatrixSync(), stopMatrixClient(), waitForMatrixClientStop(), getMatrixSyncState(), isMatrixClientSyncing()
 - [x] P1.5: Create `src/matrix/format.ts` with markdownToMatrixHtml(), matrixHtmlToPlaintext(), formatMatrixReply(), extractMatrixMentions(), containsMatrixMention()
+- [x] P1.6: Create `src/matrix/typing.ts` with sendMatrixTyping(), stopMatrixTyping()
 
 ---
 
