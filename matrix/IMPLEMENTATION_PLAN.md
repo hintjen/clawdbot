@@ -1,0 +1,378 @@
+# Matrix Provider Implementation Plan
+
+## Legend
+- `[ ]` Not started
+- `[~]` In progress
+- `[x]` Complete
+- `[!]` Blocked
+
+## Priority Levels
+- **P0**: Critical path, must complete first
+- **P1**: Important, complete after P0
+- **P2**: Nice to have, complete if time permits
+
+---
+
+## P0: Foundation (Dependencies & Config)
+
+### P0.1: Package Dependencies
+- [ ] Add `matrix-js-sdk` to package.json dependencies (`pnpm add matrix-js-sdk`)
+
+### P0.2: Channel Registry
+- [ ] Add `"matrix"` to CHAT_CHANNEL_ORDER in `src/channels/registry.ts`
+- [ ] Add Matrix entry to CHAT_CHANNEL_META in `src/channels/registry.ts`
+- [ ] Add `"element": "matrix"` alias to CHAT_CHANNEL_ALIASES (optional)
+
+### P0.3: Config Schema - Room/DM Schemas
+- [ ] Create MatrixRoomSchema in `src/config/zod-schema.providers-core.ts`
+- [ ] Create MatrixDmSchema in `src/config/zod-schema.providers-core.ts` (with superRefine for open policy)
+
+### P0.4: Config Schema - Account Schema
+- [ ] Create MatrixAccountSchema in `src/config/zod-schema.providers-core.ts`
+  - Connection: homeserver, userId, accessToken/password, deviceId
+  - Policies: groupPolicy, historyLimit, dmHistoryLimit, dms
+  - Features: replyToMode, reactionNotifications, reactionAllowlist
+  - Actions: reactions, messages, read, pins, memberInfo, roomInfo
+  - Limits: textChunkLimit, mediaMaxMb
+
+### P0.5: Config Schema - Top-level
+- [ ] Create MatrixConfigSchema extending MatrixAccountSchema with accounts record
+- [ ] Import and add matrix to ChannelsSchema in `src/config/zod-schema.providers.ts`
+
+---
+
+## P1: Core Types & Client (src/matrix/)
+
+### P1.1: Types Module
+- [ ] Create `src/matrix/types.ts` with:
+  - MatrixMessageEvent type
+  - MatrixActionOpts type
+  - MatrixRoomInfo type
+  - MatrixUserProfile type
+
+### P1.2: Token/Credentials
+- [ ] Create `src/matrix/token.ts` with resolveMatrixCredentials()
+  - Handle accessToken vs password auth
+  - Support env vars (MATRIX_ACCESS_TOKEN, MATRIX_PASSWORD)
+
+### P1.3: Accounts Module
+- [ ] Create `src/matrix/accounts.ts` with:
+  - resolveMatrixAccount({ cfg, accountId })
+  - listMatrixAccountIds(cfg)
+  - listEnabledMatrixAccounts(cfg)
+  - resolveDefaultMatrixAccountId(cfg)
+
+### P1.4: Client Lifecycle
+- [ ] Create `src/matrix/client.ts` with:
+  - createMatrixClient(opts) - create client instance
+  - loginMatrix(client, opts) - login with token or password
+  - startMatrixSync(client) - start sync loop
+  - stopMatrixClient(client) - graceful shutdown
+  - Handle reconnection on network errors
+
+### P1.5: Message Formatting
+- [ ] Create `src/matrix/format.ts` with:
+  - markdownToMatrixHtml(md) - convert markdown to Matrix HTML
+  - matrixHtmlToPlaintext(html) - strip HTML for plain body
+  - formatMatrixReply(originalEvent, newBody) - format reply with quote
+
+### P1.6: Typing Indicators
+- [ ] Create `src/matrix/typing.ts` with:
+  - sendMatrixTyping({ client, roomId, typing, timeoutMs })
+  - stopMatrixTyping({ client, roomId })
+
+### P1.7: Send Messages
+- [ ] Create `src/matrix/send.ts` with sendMessageMatrix():
+  - Handle message chunking for long messages
+  - Handle markdown -> HTML conversion
+  - Handle reply threading (m.relates_to.m.in_reply_to)
+  - Handle media attachments (images, files)
+
+### P1.8: Probe/Health Check
+- [ ] Create `src/matrix/probe.ts` with probeMatrix():
+  - Return { connected, userId, homeserver, syncState, error }
+
+---
+
+## P1: Actions Module (src/matrix/actions.ts)
+
+### P1.9: Create Actions Module
+- [ ] Create `src/matrix/actions.ts` with getClient() helper
+
+### P1.10: Reaction Actions
+- [ ] Add reactMatrixMessage(roomId, eventId, emoji, opts)
+- [ ] Add removeMatrixReaction(roomId, eventId, emoji, opts)
+- [ ] Add removeOwnMatrixReactions(roomId, eventId, opts)
+- [ ] Add listMatrixReactions(roomId, eventId, opts)
+
+### P1.11: Message Actions
+- [ ] Add sendMatrixMessage(roomId, body, opts) - alias for send.ts
+- [ ] Add editMatrixMessage(roomId, eventId, newBody, opts)
+- [ ] Add deleteMatrixMessage(roomId, eventId, opts) - redact
+- [ ] Add readMatrixMessages(roomId, opts) - fetch room history
+
+### P1.12: Read Receipt Actions
+- [ ] Add sendMatrixReadReceipt(roomId, eventId, opts)
+
+### P1.13: Room Management Actions
+- [ ] Add joinMatrixRoom(roomIdOrAlias, opts)
+- [ ] Add leaveMatrixRoom(roomId, opts)
+- [ ] Add inviteToMatrixRoom(roomId, userId, opts)
+
+### P1.14: User/Room Info Actions
+- [ ] Add getMatrixUserProfile(userId, opts)
+- [ ] Add getMatrixRoomMembers(roomId, opts)
+- [ ] Add getMatrixRoomInfo(roomId, opts)
+
+---
+
+## P1: Monitor Provider (src/matrix/monitor/)
+
+### P1.15: Monitor Types
+- [ ] Create `src/matrix/monitor/types.ts` with MonitorMatrixOpts interface
+
+### P1.16: Monitor Context
+- [ ] Create `src/matrix/monitor/context.ts` with createMatrixMonitorContext():
+  - Client reference
+  - Account config
+  - Runtime (log, error, exit)
+  - Bot user ID
+  - AllowFrom rules
+  - Channel histories
+  - Dedupe cache
+
+### P1.17: AllowFrom Filtering
+- [ ] Create `src/matrix/monitor/allow-list.ts` with:
+  - normalizeMatrixAllowList(raw)
+  - isMatrixUserAllowed(userId, allowFrom)
+  - isMatrixRoomAllowed(roomId, config)
+  - resolveMatrixRoomConfig(roomId, config)
+  - resolveMatrixShouldRequireMention(roomConfig)
+
+### P1.18: Event Handler Registration
+- [ ] Create `src/matrix/monitor/events/index.ts` with registerMatrixEvents()
+
+### P1.19: Message Event Handler
+- [ ] Create `src/matrix/monitor/events/messages.ts` with:
+  - Handle Room.timeline events
+  - Filter m.room.message type
+  - Skip historical messages (toStartOfTimeline)
+  - Skip own messages (bot self-filter)
+  - Non-blocking dispatch to agent
+
+### P1.20: Reaction Event Handler
+- [ ] Create `src/matrix/monitor/events/reactions.ts` with:
+  - Handle m.reaction events
+  - Check reactionNotifications setting
+  - Emit reaction notifications if enabled
+
+### P1.21: Member Event Handler
+- [ ] Create `src/matrix/monitor/events/members.ts` with:
+  - Handle m.room.member events
+  - Track joins/leaves if needed
+
+### P1.22: Room Event Handler
+- [ ] Create `src/matrix/monitor/events/rooms.ts` with:
+  - Handle room invites
+  - Handle room upgrades (tombstone)
+
+### P1.23: Typing Event Handler (Optional)
+- [ ] Create `src/matrix/monitor/events/typing.ts` with handleMatrixTypingEvent()
+
+### P1.24: Message Handler Factory
+- [ ] Create `src/matrix/monitor/message-handler/index.ts` with createMatrixMessageHandler()
+
+### P1.25: Message Preflight
+- [ ] Create `src/matrix/monitor/message-handler/preflight.ts` with:
+  - Check if sender is allowed (DM policy, allowFrom)
+  - Check if room is allowed (room config)
+  - Check for mention/trigger if required
+  - Filter bot's own messages
+
+### P1.26: Message Processing
+- [ ] Create `src/matrix/monitor/message-handler/process.ts` with:
+  - Extract message content (body, formatted_body)
+  - Parse reply context if present
+  - Build message event for session routing
+  - Route to session via resolveAgentRoute()
+
+### P1.27: Monitor Provider Entry Point
+- [ ] Create `src/matrix/monitor/provider.ts` with monitorMatrixProvider():
+  - Load config via resolveMatrixAccount()
+  - Create Matrix client
+  - Login (accessToken or password)
+  - Create monitor context
+  - Register event handlers
+  - Start sync loop
+  - Return cleanup handle
+
+---
+
+## P1: Channel Plugin Integration
+
+### P1.28: Index Exports
+- [ ] Create `src/matrix/index.ts` with all exports
+
+### P1.29: Channel Plugin Definition
+- [ ] Create `src/channels/plugins/matrix.ts` with matrixChannelPlugin:
+  - id, meta
+  - capabilities (chatTypes, reactions, threads, media)
+  - config helpers (listAccountIds, resolveAccount, etc.)
+  - security (resolveDmPolicy)
+  - groups (resolveRequireMention)
+  - threading (resolveReplyToMode)
+  - messaging (normalizeTarget)
+  - outbound (sendText, sendMedia)
+  - status (probeAccount, buildAccountSnapshot)
+  - gateway (startAccount)
+
+### P1.30: Register Plugin
+- [ ] Import matrixPlugin in `src/channels/plugins/index.ts`
+- [ ] Add to resolveChannels() array
+
+### P1.31: Channel Dock Integration
+- [ ] Add Matrix entry to `src/channels/dock.ts` (if exists) for shared behavior
+
+---
+
+## P2: Testing
+
+### P2.1: Unit Tests - Core
+- [ ] Create `src/matrix/accounts.test.ts`
+- [ ] Create `src/matrix/format.test.ts` - markdown/HTML conversion
+- [ ] Create `src/matrix/token.test.ts`
+
+### P2.2: Unit Tests - Actions
+- [ ] Create `src/matrix/actions.test.ts` - action function tests
+
+### P2.3: Unit Tests - Monitor
+- [ ] Create `src/matrix/monitor/allow-list.test.ts` - allowFrom filtering
+- [ ] Create `src/matrix/monitor/message-handler.test.ts` - message processing
+
+### P2.4: Integration Tests
+- [ ] Create `src/matrix/monitor.test.ts` - provider integration
+- [ ] Test with local Synapse instance (manual verification)
+- [ ] Test DM flow
+- [ ] Test group room flow
+- [ ] Test reactions
+- [ ] Test message editing/deletion
+
+---
+
+## P2: Documentation & Onboarding
+
+### P2.5: Channel Documentation
+- [ ] Create `docs/channels/matrix.md`:
+  - Overview and features
+  - Config options reference
+  - Setup steps (create bot account, get token)
+  - Element client integration
+  - Troubleshooting
+
+### P2.6: Onboarding Adapter
+- [ ] Create `src/channels/plugins/onboarding/matrix.ts` with matrixOnboardingAdapter
+- [ ] Add Matrix option to onboarding wizard
+
+### P2.7: Outbound Plugin
+- [ ] Create `src/channels/plugins/outbound/matrix.ts` for CLI send support
+
+### P2.8: Status Issues Handler
+- [ ] Create `src/channels/plugins/status-issues/matrix.ts` if needed
+
+---
+
+## P2: E2EE Enhancement (Future)
+
+### P2.9: E2EE Support (Deferred)
+- [ ] Add @matrix-org/olm dependency
+- [ ] Implement crypto store persistence
+- [ ] Implement device verification flow
+- [ ] Document E2EE setup requirements
+
+---
+
+## File Checklist
+
+### New Files (26+ files)
+- [ ] `src/matrix/index.ts`
+- [ ] `src/matrix/accounts.ts`
+- [ ] `src/matrix/actions.ts`
+- [ ] `src/matrix/client.ts`
+- [ ] `src/matrix/format.ts`
+- [ ] `src/matrix/probe.ts`
+- [ ] `src/matrix/send.ts`
+- [ ] `src/matrix/token.ts`
+- [ ] `src/matrix/types.ts`
+- [ ] `src/matrix/typing.ts`
+- [ ] `src/matrix/monitor/provider.ts`
+- [ ] `src/matrix/monitor/allow-list.ts`
+- [ ] `src/matrix/monitor/context.ts`
+- [ ] `src/matrix/monitor/types.ts`
+- [ ] `src/matrix/monitor/events/index.ts`
+- [ ] `src/matrix/monitor/events/messages.ts`
+- [ ] `src/matrix/monitor/events/reactions.ts`
+- [ ] `src/matrix/monitor/events/members.ts`
+- [ ] `src/matrix/monitor/events/rooms.ts`
+- [ ] `src/matrix/monitor/events/typing.ts`
+- [ ] `src/matrix/monitor/message-handler/index.ts`
+- [ ] `src/matrix/monitor/message-handler/preflight.ts`
+- [ ] `src/matrix/monitor/message-handler/process.ts`
+- [ ] `src/channels/plugins/matrix.ts`
+- [ ] `src/channels/plugins/onboarding/matrix.ts`
+- [ ] `src/channels/plugins/outbound/matrix.ts`
+- [ ] `docs/channels/matrix.md`
+
+### Modified Files (5 files)
+- [ ] `package.json` - add matrix-js-sdk
+- [ ] `src/channels/registry.ts` - add "matrix" to order + meta
+- [ ] `src/config/zod-schema.providers-core.ts` - add Matrix schemas
+- [ ] `src/config/zod-schema.providers.ts` - add matrix to ChannelsSchema
+- [ ] `src/channels/plugins/index.ts` - register matrix plugin
+
+---
+
+## Completed Tasks
+
+(None yet)
+
+---
+
+## Discovered Tasks
+
+(Will be populated during implementation)
+
+---
+
+## Dependencies Graph
+
+```
+P0.1 (deps) ──────────────────────────────────────────┐
+P0.2 (registry) ──────────────────────────────────────┤
+P0.3-P0.5 (config) ───────────────────────────────────┤
+                                                      ▼
+                                               ┌──────────────┐
+                                               │   P1 Core    │
+                                               │  (parallel)  │
+                                               └──────┬───────┘
+                                                      │
+        ┌──────────────┬──────────────┬───────────────┤
+        ▼              ▼              ▼               ▼
+   P1.1-P1.8     P1.9-P1.14     P1.15-P1.27     P1.28-P1.31
+   (types,       (actions)      (monitor)       (plugin)
+   client,
+   send)
+        │              │              │               │
+        └──────────────┴──────────────┴───────────────┘
+                                │
+                                ▼
+                         ┌──────────────┐
+                         │      P2      │
+                         │   (tests,    │
+                         │   docs)      │
+                         └──────────────┘
+```
+
+---
+
+*Generated from PLAN.md on 2026-01-14*
+*Last updated: 2026-01-13*
