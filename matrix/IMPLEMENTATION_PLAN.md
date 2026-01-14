@@ -250,7 +250,7 @@
 - [x] Create `src/matrix/actions.test.ts` - action function tests
 
 ### P2.3: Unit Tests - Monitor
-- [ ] Create `src/matrix/monitor/allow-list.test.ts` - allowFrom filtering
+- [x] Create `src/matrix/monitor/allow-list.test.ts` - allowFrom filtering
 - [ ] Create `src/matrix/monitor/message-handler.test.ts` - message processing
 
 ### P2.4: Integration Tests
@@ -388,6 +388,7 @@
 - [x] P2.1: Create `src/matrix/format.test.ts` with unit tests for markdownToMatrixHtml, matrixHtmlToPlaintext, formatMatrixReply, extractMatrixMentions, containsMatrixMention (68 tests).
 - [x] P2.1: Create `src/matrix/token.test.ts` with unit tests for normalizeMatrixCredential, normalizeMatrixAccessToken, normalizeMatrixPassword, resolveMatrixCredentials (41 tests).
 - [x] P2.2: Create `src/matrix/actions.test.ts` with unit tests for normalizeEmoji, reactions (add/remove/removeOwn/list), messages (edit/delete/read), room management (join/leave/invite), user/room info, read receipts, client management (44 tests).
+- [x] P2.3: Create `src/matrix/monitor/allow-list.test.ts` with unit tests for normalizeMatrixUserId, normalizeMatrixAllowList, allowListMatchesUser, isMatrixUserAllowed, isMatrixRoomAllowed, resolveMatrixRoomConfig, resolveMatrixShouldRequireMention, isMatrixRoomUserAllowed, shouldEmitMatrixReactionNotification, isMatrixRoomAllowedByPolicy (99 tests).
 
 ---
 
