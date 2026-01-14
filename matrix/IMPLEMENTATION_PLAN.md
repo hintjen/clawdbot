@@ -134,7 +134,7 @@
 - [x] Create `src/matrix/monitor/types.ts` with MonitorMatrixOpts interface
 
 ### P1.16: Monitor Context
-- [ ] Create `src/matrix/monitor/context.ts` with createMatrixMonitorContext():
+- [x] Create `src/matrix/monitor/context.ts` with createMatrixMonitorContext():
   - Client reference
   - Account config
   - Runtime (log, error, exit)
@@ -308,7 +308,7 @@
 - [x] `src/matrix/typing.ts`
 - [ ] `src/matrix/monitor/provider.ts`
 - [ ] `src/matrix/monitor/allow-list.ts`
-- [ ] `src/matrix/monitor/context.ts`
+- [x] `src/matrix/monitor/context.ts`
 - [x] `src/matrix/monitor/types.ts`
 - [ ] `src/matrix/monitor/events/index.ts`
 - [ ] `src/matrix/monitor/events/messages.ts`
@@ -358,6 +358,7 @@
 - [x] P1.13: Add room management actions - joinMatrixRoom, leaveMatrixRoom, inviteToMatrixRoom
 - [x] P1.14: Add user/room info actions - getMatrixUserProfile, getMatrixRoomMembers, getMatrixRoomInfo
 - [x] P1.15: Create `src/matrix/monitor/types.ts` with MonitorMatrixOpts, MatrixReactionEvent, MatrixMemberEvent, MatrixRoomEvent, MatrixTypingEvent, MatrixRedactionEvent types
+- [x] P1.16: Create `src/matrix/monitor/context.ts` with createMatrixMonitorContext() - client ref, account config, runtime, bot userId, allowFrom, room histories, dedupe cache, session key resolution, room/user info caching
 
 ---
 
