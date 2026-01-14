@@ -131,7 +131,7 @@
 ## P1: Monitor Provider (src/matrix/monitor/)
 
 ### P1.15: Monitor Types
-- [ ] Create `src/matrix/monitor/types.ts` with MonitorMatrixOpts interface
+- [x] Create `src/matrix/monitor/types.ts` with MonitorMatrixOpts interface
 
 ### P1.16: Monitor Context
 - [ ] Create `src/matrix/monitor/context.ts` with createMatrixMonitorContext():
@@ -309,7 +309,7 @@
 - [ ] `src/matrix/monitor/provider.ts`
 - [ ] `src/matrix/monitor/allow-list.ts`
 - [ ] `src/matrix/monitor/context.ts`
-- [ ] `src/matrix/monitor/types.ts`
+- [x] `src/matrix/monitor/types.ts`
 - [ ] `src/matrix/monitor/events/index.ts`
 - [ ] `src/matrix/monitor/events/messages.ts`
 - [ ] `src/matrix/monitor/events/reactions.ts`
@@ -357,6 +357,7 @@
 - [x] P1.12: Add sendMatrixReadReceipt for read receipts
 - [x] P1.13: Add room management actions - joinMatrixRoom, leaveMatrixRoom, inviteToMatrixRoom
 - [x] P1.14: Add user/room info actions - getMatrixUserProfile, getMatrixRoomMembers, getMatrixRoomInfo
+- [x] P1.15: Create `src/matrix/monitor/types.ts` with MonitorMatrixOpts, MatrixReactionEvent, MatrixMemberEvent, MatrixRoomEvent, MatrixTypingEvent, MatrixRedactionEvent types
 
 ---
 
