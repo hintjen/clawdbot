@@ -51,7 +51,7 @@
   - MatrixUserProfile type
 
 ### P1.2: Token/Credentials
-- [ ] Create `src/matrix/token.ts` with resolveMatrixCredentials()
+- [x] Create `src/matrix/token.ts` with resolveMatrixCredentials()
   - Handle accessToken vs password auth
   - Support env vars (MATRIX_ACCESS_TOKEN, MATRIX_PASSWORD)
 
@@ -301,7 +301,7 @@
 - [ ] `src/matrix/format.ts`
 - [ ] `src/matrix/probe.ts`
 - [ ] `src/matrix/send.ts`
-- [ ] `src/matrix/token.ts`
+- [x] `src/matrix/token.ts`
 - [x] `src/matrix/types.ts`
 - [ ] `src/matrix/typing.ts`
 - [ ] `src/matrix/monitor/provider.ts`
@@ -340,6 +340,7 @@
 - [x] P0.4: Create MatrixAccountSchema and MatrixConfigSchema in `src/config/zod-schema.providers-core.ts`
 - [x] P0.5: Import MatrixConfigSchema and add matrix to ChannelsSchema in `src/config/zod-schema.providers.ts`
 - [x] P1.1: Create `src/matrix/types.ts` with MatrixMessageEvent, MatrixActionOpts, MatrixRoomInfo, MatrixUserProfile, MatrixFile, MatrixMessageSummary types
+- [x] P1.2: Create `src/matrix/token.ts` with resolveMatrixCredentials(), normalizeMatrixAccessToken(), normalizeMatrixPassword(), MatrixCredentials type
 
 ---
 
