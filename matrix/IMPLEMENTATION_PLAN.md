@@ -56,7 +56,7 @@
   - Support env vars (MATRIX_ACCESS_TOKEN, MATRIX_PASSWORD)
 
 ### P1.3: Accounts Module
-- [ ] Create `src/matrix/accounts.ts` with:
+- [x] Create `src/matrix/accounts.ts` with:
   - resolveMatrixAccount({ cfg, accountId })
   - listMatrixAccountIds(cfg)
   - listEnabledMatrixAccounts(cfg)
@@ -295,7 +295,7 @@
 
 ### New Files (26+ files)
 - [ ] `src/matrix/index.ts`
-- [ ] `src/matrix/accounts.ts`
+- [x] `src/matrix/accounts.ts`
 - [ ] `src/matrix/actions.ts`
 - [ ] `src/matrix/client.ts`
 - [ ] `src/matrix/format.ts`
@@ -341,6 +341,9 @@
 - [x] P0.5: Import MatrixConfigSchema and add matrix to ChannelsSchema in `src/config/zod-schema.providers.ts`
 - [x] P1.1: Create `src/matrix/types.ts` with MatrixMessageEvent, MatrixActionOpts, MatrixRoomInfo, MatrixUserProfile, MatrixFile, MatrixMessageSummary types
 - [x] P1.2: Create `src/matrix/token.ts` with resolveMatrixCredentials(), normalizeMatrixAccessToken(), normalizeMatrixPassword(), MatrixCredentials type
+- [x] P1.3: Create `src/matrix/accounts.ts` with resolveMatrixAccount(), listMatrixAccountIds(), listEnabledMatrixAccounts(), resolveDefaultMatrixAccountId()
+- [x] Create `src/config/types.matrix.ts` with MatrixAccountConfig, MatrixDmConfig, MatrixRoomConfig, MatrixActionConfig types
+- [x] Add types.matrix.js export to `src/config/types.ts`
 
 ---
 
