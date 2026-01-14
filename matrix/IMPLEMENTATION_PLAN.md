@@ -99,32 +99,32 @@
 ## P1: Actions Module (src/matrix/actions.ts)
 
 ### P1.9: Create Actions Module
-- [ ] Create `src/matrix/actions.ts` with getClient() helper
+- [x] Create `src/matrix/actions.ts` with getClient() helper
 
 ### P1.10: Reaction Actions
-- [ ] Add reactMatrixMessage(roomId, eventId, emoji, opts)
-- [ ] Add removeMatrixReaction(roomId, eventId, emoji, opts)
-- [ ] Add removeOwnMatrixReactions(roomId, eventId, opts)
-- [ ] Add listMatrixReactions(roomId, eventId, opts)
+- [x] Add reactMatrixMessage(roomId, eventId, emoji, opts)
+- [x] Add removeMatrixReaction(roomId, eventId, emoji, opts)
+- [x] Add removeOwnMatrixReactions(roomId, eventId, opts)
+- [x] Add listMatrixReactions(roomId, eventId, opts)
 
 ### P1.11: Message Actions
-- [ ] Add sendMatrixMessage(roomId, body, opts) - alias for send.ts
-- [ ] Add editMatrixMessage(roomId, eventId, newBody, opts)
-- [ ] Add deleteMatrixMessage(roomId, eventId, opts) - redact
-- [ ] Add readMatrixMessages(roomId, opts) - fetch room history
+- [x] Add sendMatrixMessage(roomId, body, opts) - alias for send.ts
+- [x] Add editMatrixMessage(roomId, eventId, newBody, opts)
+- [x] Add deleteMatrixMessage(roomId, eventId, opts) - redact
+- [x] Add readMatrixMessages(roomId, opts) - fetch room history
 
 ### P1.12: Read Receipt Actions
-- [ ] Add sendMatrixReadReceipt(roomId, eventId, opts)
+- [x] Add sendMatrixReadReceipt(roomId, eventId, opts)
 
 ### P1.13: Room Management Actions
-- [ ] Add joinMatrixRoom(roomIdOrAlias, opts)
-- [ ] Add leaveMatrixRoom(roomId, opts)
-- [ ] Add inviteToMatrixRoom(roomId, userId, opts)
+- [x] Add joinMatrixRoom(roomIdOrAlias, opts)
+- [x] Add leaveMatrixRoom(roomId, opts)
+- [x] Add inviteToMatrixRoom(roomId, userId, opts)
 
 ### P1.14: User/Room Info Actions
-- [ ] Add getMatrixUserProfile(userId, opts)
-- [ ] Add getMatrixRoomMembers(roomId, opts)
-- [ ] Add getMatrixRoomInfo(roomId, opts)
+- [x] Add getMatrixUserProfile(userId, opts)
+- [x] Add getMatrixRoomMembers(roomId, opts)
+- [x] Add getMatrixRoomInfo(roomId, opts)
 
 ---
 
@@ -298,7 +298,7 @@
 ### New Files (26+ files)
 - [ ] `src/matrix/index.ts`
 - [x] `src/matrix/accounts.ts`
-- [ ] `src/matrix/actions.ts`
+- [x] `src/matrix/actions.ts`
 - [x] `src/matrix/client.ts`
 - [x] `src/matrix/format.ts`
 - [x] `src/matrix/probe.ts`
@@ -351,6 +351,12 @@
 - [x] P1.6: Create `src/matrix/typing.ts` with sendMatrixTyping(), stopMatrixTyping()
 - [x] P1.7: Create `src/matrix/send.ts` with sendMessageMatrix() - message chunking, markdown→HTML, reply threading, media attachments
 - [x] P1.8: Create `src/matrix/probe.ts` with probeMatrix() - connection test, whoami verification, profile fetch
+- [x] P1.9: Create `src/matrix/actions.ts` with getClient() helper and withClient() wrapper
+- [x] P1.10: Add reaction actions - reactMatrixMessage, removeMatrixReaction, removeOwnMatrixReactions, listMatrixReactions
+- [x] P1.11: Add message actions - sendMatrixMessage, editMatrixMessage, deleteMatrixMessage, readMatrixMessages
+- [x] P1.12: Add sendMatrixReadReceipt for read receipts
+- [x] P1.13: Add room management actions - joinMatrixRoom, leaveMatrixRoom, inviteToMatrixRoom
+- [x] P1.14: Add user/room info actions - getMatrixUserProfile, getMatrixRoomMembers, getMatrixRoomInfo
 
 ---
 
