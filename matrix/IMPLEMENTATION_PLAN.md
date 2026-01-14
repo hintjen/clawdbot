@@ -91,8 +91,8 @@
   - Handle media attachments (images, files)
 
 ### P1.8: Probe/Health Check
-- [ ] Create `src/matrix/probe.ts` with probeMatrix():
-  - Return { connected, userId, homeserver, syncState, error }
+- [x] Create `src/matrix/probe.ts` with probeMatrix():
+  - Return { ok, status, error, elapsedMs, user, homeserver, syncState }
 
 ---
 
@@ -301,7 +301,7 @@
 - [ ] `src/matrix/actions.ts`
 - [x] `src/matrix/client.ts`
 - [x] `src/matrix/format.ts`
-- [ ] `src/matrix/probe.ts`
+- [x] `src/matrix/probe.ts`
 - [x] `src/matrix/send.ts`
 - [x] `src/matrix/token.ts`
 - [x] `src/matrix/types.ts`
@@ -350,6 +350,7 @@
 - [x] P1.5: Create `src/matrix/format.ts` with markdownToMatrixHtml(), matrixHtmlToPlaintext(), formatMatrixReply(), extractMatrixMentions(), containsMatrixMention()
 - [x] P1.6: Create `src/matrix/typing.ts` with sendMatrixTyping(), stopMatrixTyping()
 - [x] P1.7: Create `src/matrix/send.ts` with sendMessageMatrix() - message chunking, markdown→HTML, reply threading, media attachments
+- [x] P1.8: Create `src/matrix/probe.ts` with probeMatrix() - connection test, whoami verification, profile fetch
 
 ---
 
