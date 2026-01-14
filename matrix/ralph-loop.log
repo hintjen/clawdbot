@@ -2363,3 +2363,55 @@ Changes committed and pushed to origin/matrix.
 
 [0;32m=== Build Iteration 30 ===[0m
 
+I'll start by orienting myself with the context and plan files.
+    [Read]
+    [Read]
+Now let me check for incomplete tasks:
+    [Bash]
+There are 22 incomplete tasks. Let me find the first incomplete task:
+    [Bash]
+The first incomplete task is **P2.1: Unit Tests - Core - Create `src/matrix/accounts.test.ts`**.
+
+Let me first examine the existing `accounts.ts` file to understand what needs to be tested:
+    [Read]
+Now let me look at an example test file in the codebase to understand the testing patterns used:
+    [Glob]
+    [Glob]
+    [Glob]
+Let me look at an example test file that tests account resolution patterns:
+    [Read]
+Let me also look at the token.ts to understand the credential resolution that accounts.ts depends on:
+    [Read]
+Let me also look at similar test files (Discord/Slack accounts tests) for patterns:
+    [Glob]
+    [Glob]
+Let me look at the types.matrix.ts file to understand the types better:
+    [Read]
+Now I have a good understanding of the accounts.ts module and the testing patterns. Let me create the unit test file:
+    [Write]
+Now let me validate the test file compiles correctly:
+    [Bash]
+Those are unrelated errors from the broader codebase. Let me run the actual tests to validate:
+    [Bash]
+    [Bash]
+    [Bash]
+All 25 tests pass. Now let me update the implementation plan to mark this task as complete:
+    [Edit]
+Now let me add this to the completed tasks section:
+    [Edit]
+Now let me commit and push this change:
+    [Bash]
+    [Bash]
+Done. I completed **one task**: Created `src/matrix/accounts.test.ts` with 25 unit tests for the Matrix accounts module.
+
+The tests cover:
+- `listMatrixAccountIds`: empty config, no accounts, sorted IDs, filtering empty strings
+- `resolveDefaultMatrixAccountId`: default handling, first sorted ID fallback  
+- `resolveMatrixAccount`: config merging, enabled flags, env vars, credential sources, name trimming
+- `listEnabledMatrixAccounts`: filtering disabled accounts, base config disabled
+
+Changes committed and pushed to `origin/matrix`.
+--- 158.7s, 23 turns ---
+
+[0;32m=== Build Iteration 31 ===[0m
+

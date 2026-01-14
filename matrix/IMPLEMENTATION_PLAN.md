@@ -243,7 +243,7 @@
 
 ### P2.1: Unit Tests - Core
 - [x] Create `src/matrix/accounts.test.ts`
-- [ ] Create `src/matrix/format.test.ts` - markdown/HTML conversion
+- [x] Create `src/matrix/format.test.ts` - markdown/HTML conversion
 - [ ] Create `src/matrix/token.test.ts`
 
 ### P2.2: Unit Tests - Actions
@@ -385,6 +385,7 @@
 - [x] P1.31: Add Matrix entry to `src/channels/dock.ts` for shared behavior.
 - [x] P2.7: Create `src/channels/plugins/outbound/matrix.ts` for CLI send support.
 - [x] P2.1: Create `src/matrix/accounts.test.ts` with unit tests for listMatrixAccountIds, resolveDefaultMatrixAccountId, resolveMatrixAccount, listEnabledMatrixAccounts (25 tests).
+- [x] P2.1: Create `src/matrix/format.test.ts` with unit tests for markdownToMatrixHtml, matrixHtmlToPlaintext, formatMatrixReply, extractMatrixMentions, containsMatrixMention (68 tests).
 
 ---
 
