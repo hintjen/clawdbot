@@ -63,7 +63,7 @@
   - resolveDefaultMatrixAccountId(cfg)
 
 ### P1.4: Client Lifecycle
-- [ ] Create `src/matrix/client.ts` with:
+- [x] Create `src/matrix/client.ts` with:
   - createMatrixClient(opts) - create client instance
   - loginMatrix(client, opts) - login with token or password
   - startMatrixSync(client) - start sync loop
@@ -297,7 +297,7 @@
 - [ ] `src/matrix/index.ts`
 - [x] `src/matrix/accounts.ts`
 - [ ] `src/matrix/actions.ts`
-- [ ] `src/matrix/client.ts`
+- [x] `src/matrix/client.ts`
 - [ ] `src/matrix/format.ts`
 - [ ] `src/matrix/probe.ts`
 - [ ] `src/matrix/send.ts`
@@ -344,6 +344,7 @@
 - [x] P1.3: Create `src/matrix/accounts.ts` with resolveMatrixAccount(), listMatrixAccountIds(), listEnabledMatrixAccounts(), resolveDefaultMatrixAccountId()
 - [x] Create `src/config/types.matrix.ts` with MatrixAccountConfig, MatrixDmConfig, MatrixRoomConfig, MatrixActionConfig types
 - [x] Add types.matrix.js export to `src/config/types.ts`
+- [x] P1.4: Create `src/matrix/client.ts` with createMatrixClient(), loginMatrix(), startMatrixSync(), stopMatrixClient(), waitForMatrixClientStop(), getMatrixSyncState(), isMatrixClientSyncing()
 
 ---
 
