@@ -7,6 +7,7 @@ import type {
   MatrixClient,
   ICreateClientOpts,
   SyncState,
+  IFilterDefinition,
 } from "matrix-js-sdk";
 import { ClientEvent, Filter } from "matrix-js-sdk";
 import * as sdk from "matrix-js-sdk";
@@ -155,19 +156,14 @@ export async function startMatrixSync(
   opts?: {
     /** Timeout for initial sync in ms (default: 30000). */
     initialSyncTimeout?: number;
-    /** Filter for sync (room timeline limit, etc). */
-    filter?: {
-      room?: {
-        timeline?: { limit?: number };
-        state?: { lazy_load_members?: boolean };
-      };
-    };
+    /** Filter definition for sync (room timeline limit, etc). */
+    filterDefinition?: IFilterDefinition;
     runtime?: RuntimeEnv;
   },
 ): Promise<void> {
   const {
     initialSyncTimeout = 30000,
-    filter = {
+    filterDefinition = {
       room: {
         timeline: { limit: 10 },
         state: { lazy_load_members: true },
@@ -175,6 +171,10 @@ export async function startMatrixSync(
     },
     runtime,
   } = opts ?? {};
+
+  // Create a proper Filter instance from the definition
+  const userId = client.getUserId();
+  const filter = Filter.fromJson(userId, "clawdbot-sync-filter", filterDefinition);
 
   return new Promise((resolve, reject) => {
     let resolved = false;
@@ -210,7 +210,7 @@ export async function startMatrixSync(
     client.on(ClientEvent.Sync, syncListener);
 
     // Start sync with filter
-    client.startClient({ filter: filter as unknown as Filter });
+    client.startClient({ filter });
   });
 }
 
