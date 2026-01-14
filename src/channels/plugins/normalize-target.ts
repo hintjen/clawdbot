@@ -117,3 +117,28 @@ export function normalizeWhatsAppMessagingTarget(
   if (!trimmed) return undefined;
   return normalizeWhatsAppTarget(trimmed) ?? undefined;
 }
+
+export function normalizeMatrixMessagingTarget(
+  raw: string,
+): string | undefined {
+  const trimmed = raw.trim();
+  if (!trimmed) return undefined;
+
+  // Matrix room IDs start with ! and room aliases start with #
+  if (trimmed.startsWith("!") || trimmed.startsWith("#")) {
+    return `room:${trimmed}`.toLowerCase();
+  }
+
+  // Allow explicit prefixes
+  if (trimmed.toLowerCase().startsWith("room:")) {
+    const id = trimmed.slice(5).trim();
+    return id ? `room:${id}`.toLowerCase() : undefined;
+  }
+  if (trimmed.toLowerCase().startsWith("matrix:")) {
+    const id = trimmed.slice(7).trim();
+    return id ? `room:${id}`.toLowerCase() : undefined;
+  }
+
+  // Assume raw ID is a room ID
+  return `room:${trimmed}`.toLowerCase();
+}

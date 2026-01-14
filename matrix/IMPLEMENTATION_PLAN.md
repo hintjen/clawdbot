@@ -218,7 +218,7 @@
 - [x] Create `src/matrix/index.ts` with all exports
 
 ### P1.29: Channel Plugin Definition
-- [ ] Create `src/channels/plugins/matrix.ts` with matrixChannelPlugin:
+- [x] Create `src/channels/plugins/matrix.ts` with matrixChannelPlugin:
   - id, meta
   - capabilities (chatTypes, reactions, threads, media)
   - config helpers (listAccountIds, resolveAccount, etc.)
@@ -231,11 +231,11 @@
   - gateway (startAccount)
 
 ### P1.30: Register Plugin
-- [ ] Import matrixPlugin in `src/channels/plugins/index.ts`
-- [ ] Add to resolveChannels() array
+- [x] Import matrixPlugin in `src/channels/plugins/index.ts`
+- [x] Add to resolveChannels() array
 
 ### P1.31: Channel Dock Integration
-- [ ] Add Matrix entry to `src/channels/dock.ts` (if exists) for shared behavior
+- [x] Add Matrix entry to `src/channels/dock.ts` (if exists) for shared behavior
 
 ---
 
@@ -278,7 +278,7 @@
 - [ ] Add Matrix option to onboarding wizard
 
 ### P2.7: Outbound Plugin
-- [ ] Create `src/channels/plugins/outbound/matrix.ts` for CLI send support
+- [x] Create `src/channels/plugins/outbound/matrix.ts` for CLI send support
 
 ### P2.8: Status Issues Handler
 - [ ] Create `src/channels/plugins/status-issues/matrix.ts` if needed
@@ -323,17 +323,22 @@
 - [x] `src/matrix/monitor/message-handler/index.ts`
 - [x] `src/matrix/monitor/message-handler/preflight.ts`
 - [x] `src/matrix/monitor/message-handler/process.ts`
-- [ ] `src/channels/plugins/matrix.ts`
+- [x] `src/channels/plugins/matrix.ts`
 - [ ] `src/channels/plugins/onboarding/matrix.ts`
-- [ ] `src/channels/plugins/outbound/matrix.ts`
+- [x] `src/channels/plugins/outbound/matrix.ts`
 - [ ] `docs/channels/matrix.md`
 
-### Modified Files (5 files)
+### Modified Files (5+ files)
 - [x] `package.json` - add matrix-js-sdk
 - [x] `src/channels/registry.ts` - add "matrix" to order + meta
 - [x] `src/config/zod-schema.providers-core.ts` - add Matrix schemas (MatrixRoomSchema, MatrixDmSchema, MatrixAccountSchema, MatrixConfigSchema)
 - [x] `src/config/zod-schema.providers.ts` - add matrix to ChannelsSchema
-- [ ] `src/channels/plugins/index.ts` - register matrix plugin
+- [x] `src/channels/plugins/index.ts` - register matrix plugin
+- [x] `src/channels/plugins/load.ts` - add matrix lazy loader
+- [x] `src/channels/plugins/outbound/load.ts` - add matrix outbound loader
+- [x] `src/channels/dock.ts` - add matrix dock entry
+- [x] `src/config/types.channels.ts` - add MatrixConfig to ChannelsConfig type
+- [x] `src/channels/plugins/normalize-target.ts` - add normalizeMatrixMessagingTarget()
 
 ---
 
@@ -375,6 +380,10 @@
 - [x] P1.26: Create `src/matrix/monitor/message-handler/process.ts` with processMatrixMessage() - extracts message content, builds agent envelope with history context, dispatches to agent via dispatchReplyWithBufferedBlockDispatcher, delivers replies via sendMessageMatrix with proper threading, handles typing indicators.
 - [x] P1.27: Create `src/matrix/monitor/provider.ts` with monitorMatrixProvider() - main entry point for Matrix provider: loads config via resolveMatrixAccount(), creates Matrix client, logs in (accessToken or password), creates monitor context, registers event handlers, starts sync loop, waits for shutdown signal.
 - [x] P1.28: Create `src/matrix/index.ts` with all exports - account management, actions (reactions, messages, read receipts, room management, user/room info), client lifecycle, message formatting, monitor provider, probe, send, token/credentials, types, and typing indicators.
+- [x] P1.29: Create `src/channels/plugins/matrix.ts` with matrixPlugin - id, meta, capabilities, config helpers, security, groups, threading, messaging, outbound (sendText/sendMedia), status, gateway. Also added Matrix to ChannelsConfig type, dock.ts, plugins/index.ts, plugins/load.ts, outbound/load.ts, and normalize-target.ts.
+- [x] P1.30: Import matrixPlugin in `src/channels/plugins/index.ts` and add to resolveChannels() array.
+- [x] P1.31: Add Matrix entry to `src/channels/dock.ts` for shared behavior.
+- [x] P2.7: Create `src/channels/plugins/outbound/matrix.ts` for CLI send support.
 
 ---
 

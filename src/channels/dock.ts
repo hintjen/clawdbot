@@ -1,6 +1,7 @@
 import type { ClawdbotConfig } from "../config/config.js";
 import { resolveDiscordAccount } from "../discord/accounts.js";
 import { resolveIMessageAccount } from "../imessage/accounts.js";
+import { resolveMatrixAccount } from "../matrix/accounts.js";
 import { resolveSignalAccount } from "../signal/accounts.js";
 import { resolveSlackAccount } from "../slack/accounts.js";
 import { resolveTelegramAccount } from "../telegram/accounts.js";
@@ -314,6 +315,54 @@ const DOCKS: Record<ChannelId, ChannelDock> = {
       formatAllowFrom: ({ allowFrom }) => formatLower(allowFrom),
     },
     threading: {
+      buildToolContext: ({ context, hasRepliedRef }) => ({
+        currentChannelId: context.To?.trim() || undefined,
+        currentThreadTs: context.ReplyToId,
+        hasRepliedRef,
+      }),
+    },
+  },
+  matrix: {
+    id: "matrix",
+    capabilities: {
+      chatTypes: ["direct", "channel"],
+      reactions: true,
+      media: true,
+    },
+    outbound: { textChunkLimit: 4000 },
+    streaming: {
+      blockStreamingCoalesceDefaults: { minChars: 1500, idleMs: 1000 },
+    },
+    config: {
+      resolveAllowFrom: ({ cfg, accountId }) =>
+        (
+          resolveMatrixAccount({ cfg, accountId }).config.dm?.allowFrom ?? []
+        ).map((entry) => String(entry)),
+      formatAllowFrom: ({ allowFrom }) => formatLower(allowFrom),
+    },
+    groups: {
+      resolveRequireMention: ({ cfg, groupId }) => {
+        if (!groupId) return true;
+        const rooms = cfg.channels?.matrix?.rooms;
+        if (!rooms) return true;
+        const roomConfig = rooms[groupId];
+        if (roomConfig && typeof roomConfig.requireMention === "boolean") {
+          return roomConfig.requireMention;
+        }
+        const wildcard = rooms["*"];
+        if (wildcard && typeof wildcard.requireMention === "boolean") {
+          return wildcard.requireMention;
+        }
+        return true;
+      },
+    },
+    mentions: {
+      // Matrix mentions look like @user:server.org
+      stripPatterns: () => ["@[a-zA-Z0-9._=-]+:[a-zA-Z0-9._-]+"],
+    },
+    threading: {
+      resolveReplyToMode: ({ cfg }) =>
+        cfg.channels?.matrix?.replyToMode ?? "off",
       buildToolContext: ({ context, hasRepliedRef }) => ({
         currentChannelId: context.To?.trim() || undefined,
         currentThreadTs: context.ReplyToId,

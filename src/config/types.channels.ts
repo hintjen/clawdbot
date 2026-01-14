@@ -1,5 +1,6 @@
 import type { DiscordConfig } from "./types.discord.js";
 import type { IMessageConfig } from "./types.imessage.js";
+import type { MatrixConfig } from "./types.matrix.js";
 import type { MSTeamsConfig } from "./types.msteams.js";
 import type { SignalConfig } from "./types.signal.js";
 import type { SlackConfig } from "./types.slack.js";
@@ -14,4 +15,5 @@ export type ChannelsConfig = {
   signal?: SignalConfig;
   imessage?: IMessageConfig;
   msteams?: MSTeamsConfig;
+  matrix?: MatrixConfig;
 };

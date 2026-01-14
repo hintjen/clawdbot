@@ -14,6 +14,7 @@ const LOADERS: Record<ChannelId, PluginLoader> = {
   signal: async () => (await import("./signal.js")).signalPlugin,
   imessage: async () => (await import("./imessage.js")).imessagePlugin,
   msteams: async () => (await import("./msteams.js")).msteamsPlugin,
+  matrix: async () => (await import("./matrix.js")).matrixPlugin,
 };
 
 const cache = new Map<ChannelId, ChannelPlugin>();
