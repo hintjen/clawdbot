@@ -194,11 +194,11 @@
   - Filter bot's own messages
 
 ### P1.26: Message Processing
-- [ ] Create `src/matrix/monitor/message-handler/process.ts` with:
+- [x] Create `src/matrix/monitor/message-handler/process.ts` with:
   - Extract message content (body, formatted_body)
   - Parse reply context if present
   - Build message event for session routing
-  - Route to session via resolveAgentRoute()
+  - Route to session via dispatchReplyWithBufferedBlockDispatcher()
 
 ### P1.27: Monitor Provider Entry Point
 - [ ] Create `src/matrix/monitor/provider.ts` with monitorMatrixProvider():
@@ -322,7 +322,7 @@
 - [x] `src/matrix/monitor/events/typing.ts`
 - [x] `src/matrix/monitor/message-handler/index.ts`
 - [x] `src/matrix/monitor/message-handler/preflight.ts`
-- [ ] `src/matrix/monitor/message-handler/process.ts`
+- [x] `src/matrix/monitor/message-handler/process.ts`
 - [ ] `src/channels/plugins/matrix.ts`
 - [ ] `src/channels/plugins/onboarding/matrix.ts`
 - [ ] `src/channels/plugins/outbound/matrix.ts`
@@ -372,6 +372,7 @@
 - [x] P1.23: Create `src/matrix/monitor/events/typing.ts` with registerMatrixTypingEvents() - handles RoomMemberEvent.Typing for incoming typing indicators from other users, logs typing start/stop for debugging, filters out bot's own typing events. Updated events/index.ts to import and register typing handler.
 - [x] P1.24: Create `src/matrix/monitor/message-handler/index.ts` with createMatrixMessageHandler() - factory function returning MatrixMessageHandler that runs preflight -> process pipeline, follows Discord/Slack pattern with non-blocking concurrent execution, errors caught and logged.
 - [x] P1.25: Create `src/matrix/monitor/message-handler/preflight.ts` with preflightMatrixMessage() - validates incoming messages before processing: filters bot's own messages, checks DM policy/allowlist for DMs, checks room policy/allowlist for rooms, handles pairing for unauthorized DM senders, checks mention requirements, resolves agent route, records channel activity, builds history entries.
+- [x] P1.26: Create `src/matrix/monitor/message-handler/process.ts` with processMatrixMessage() - extracts message content, builds agent envelope with history context, dispatches to agent via dispatchReplyWithBufferedBlockDispatcher, delivers replies via sendMessageMatrix with proper threading, handles typing indicators.
 
 ---
 
