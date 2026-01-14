@@ -31,6 +31,7 @@ import type {
   CronFormState,
   DiscordForm,
   IMessageForm,
+  MatrixForm,
   SlackForm,
   SignalForm,
   TelegramForm,
@@ -50,6 +51,7 @@ import {
   loadChannels,
   updateDiscordForm,
   updateIMessageForm,
+  updateMatrixForm,
   updateSlackForm,
   updateSignalForm,
   updateTelegramForm,
@@ -146,6 +148,10 @@ export type AppViewState = {
   imessageForm: IMessageForm;
   imessageSaving: boolean;
   imessageConfigStatus: string | null;
+  matrixForm: MatrixForm;
+  matrixSaving: boolean;
+  matrixTokenLocked: boolean;
+  matrixConfigStatus: string | null;
   presenceLoading: boolean;
   presenceEntries: PresenceEntry[];
   presenceError: string | null;
@@ -347,6 +353,10 @@ export function renderApp(state: AppViewState) {
               imessageForm: state.imessageForm,
               imessageSaving: state.imessageSaving,
               imessageStatus: state.imessageConfigStatus,
+              matrixForm: state.matrixForm,
+              matrixTokenLocked: state.matrixTokenLocked,
+              matrixSaving: state.matrixSaving,
+              matrixStatus: state.matrixConfigStatus,
               onRefresh: (probe) => loadChannels(state, probe),
               onWhatsAppStart: (force) => state.handleWhatsAppStart(force),
               onWhatsAppWait: () => state.handleWhatsAppWait(),
@@ -361,6 +371,8 @@ export function renderApp(state: AppViewState) {
               onSignalSave: () => state.handleSignalSave(),
               onIMessageChange: (patch) => updateIMessageForm(state, patch),
               onIMessageSave: () => state.handleIMessageSave(),
+              onMatrixChange: (patch) => updateMatrixForm(state, patch),
+              onMatrixSave: () => state.handleMatrixSave(),
             })
           : nothing}
 

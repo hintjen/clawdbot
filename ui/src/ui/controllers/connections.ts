@@ -9,6 +9,7 @@ import {
   type DiscordGuildChannelForm,
   type DiscordGuildForm,
   type IMessageForm,
+  type MatrixForm,
   type SlackActionForm,
   type SlackForm,
   type SignalForm,
@@ -45,6 +46,10 @@ export type ConnectionsState = {
   imessageForm: IMessageForm;
   imessageSaving: boolean;
   imessageConfigStatus: string | null;
+  matrixForm: MatrixForm;
+  matrixSaving: boolean;
+  matrixTokenLocked: boolean;
+  matrixConfigStatus: string | null;
   configSnapshot: ConfigSnapshot | null;
 };
 
@@ -179,6 +184,13 @@ export function updateIMessageForm(
   patch: Partial<IMessageForm>,
 ) {
   state.imessageForm = { ...state.imessageForm, ...patch };
+}
+
+export function updateMatrixForm(
+  state: ConnectionsState,
+  patch: Partial<MatrixForm>,
+) {
+  state.matrixForm = { ...state.matrixForm, ...patch };
 }
 
 export async function saveTelegramConfig(state: ConnectionsState) {
@@ -711,5 +723,83 @@ export async function saveIMessageConfig(state: ConnectionsState) {
     state.imessageConfigStatus = String(err);
   } finally {
     state.imessageSaving = false;
+  }
+}
+
+export async function saveMatrixConfig(state: ConnectionsState) {
+  if (!state.client || !state.connected) return;
+  if (state.matrixSaving) return;
+  state.matrixSaving = true;
+  state.matrixConfigStatus = null;
+  try {
+    const base = state.configSnapshot?.config ?? {};
+    const config = { ...base } as Record<string, unknown>;
+    const channels = { ...(config.channels ?? {}) } as Record<string, unknown>;
+    const matrix = { ...(channels.matrix ?? {}) } as Record<string, unknown>;
+    const form = state.matrixForm;
+
+    if (form.enabled) {
+      delete matrix.enabled;
+    } else {
+      matrix.enabled = false;
+    }
+
+    const homeserver = form.homeserver.trim();
+    if (homeserver) matrix.homeserver = homeserver;
+    else delete matrix.homeserver;
+
+    const userId = form.userId.trim();
+    if (userId) matrix.userId = userId;
+    else delete matrix.userId;
+
+    // Only set accessToken if not locked (env var not set)
+    if (!state.matrixTokenLocked) {
+      const accessToken = form.accessToken.trim();
+      if (accessToken) matrix.accessToken = accessToken;
+      else delete matrix.accessToken;
+    }
+
+    // DM settings
+    const dm = { ...(matrix.dm ?? {}) } as Record<string, unknown>;
+    if (form.dmEnabled) {
+      delete dm.enabled;
+    } else {
+      dm.enabled = false;
+    }
+    const allowFrom = parseList(form.allowFrom);
+    if (allowFrom.length > 0) dm.allowFrom = allowFrom;
+    else delete dm.allowFrom;
+    if (Object.keys(dm).length > 0) {
+      matrix.dm = dm;
+    } else {
+      delete matrix.dm;
+    }
+
+    const mediaMaxMb = Number(form.mediaMaxMb);
+    if (Number.isFinite(mediaMaxMb) && mediaMaxMb > 0) {
+      matrix.mediaMaxMb = mediaMaxMb;
+    } else {
+      delete matrix.mediaMaxMb;
+    }
+
+    if (Object.keys(matrix).length > 0) {
+      channels.matrix = matrix;
+    } else {
+      delete channels.matrix;
+    }
+
+    if (Object.keys(channels).length > 0) {
+      config.channels = channels;
+    } else {
+      delete config.channels;
+    }
+
+    const raw = `${JSON.stringify(config, null, 2).trimEnd()}\n`;
+    await state.client.request("config.set", { raw });
+    state.matrixConfigStatus = "Saved. Restart gateway if needed.";
+  } catch (err) {
+    state.matrixConfigStatus = String(err);
+  } finally {
+    state.matrixSaving = false;
   }
 }

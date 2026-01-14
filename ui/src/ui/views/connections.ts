@@ -6,6 +6,7 @@ import type {
   ChannelsStatusSnapshot,
   DiscordStatus,
   IMessageStatus,
+  MatrixStatus,
   SignalStatus,
   SlackStatus,
   TelegramStatus,
@@ -27,6 +28,7 @@ import { channelEnabled, formatDuration, renderChannelAccountCount } from "./con
 import { discordActionOptions, slackActionOptions } from "./connections.action-options";
 import { renderTelegramCard } from "./connections.telegram";
 import { renderWhatsAppCard } from "./connections.whatsapp";
+import { renderMatrixCard } from "./connections.matrix";
 
 export function renderConnections(props: ConnectionsProps) {
   const channels = props.snapshot?.channels as Record<string, unknown> | null;
@@ -40,6 +42,7 @@ export function renderConnections(props: ConnectionsProps) {
   const slack = (channels?.slack ?? null) as SlackStatus | null;
   const signal = (channels?.signal ?? null) as SignalStatus | null;
   const imessage = (channels?.imessage ?? null) as IMessageStatus | null;
+  const matrix = (channels?.matrix ?? null) as MatrixStatus | null;
   const channelOrder: ChannelKey[] = [
     "whatsapp",
     "telegram",
@@ -47,6 +50,7 @@ export function renderConnections(props: ConnectionsProps) {
     "slack",
     "signal",
     "imessage",
+    "matrix",
   ];
   const orderedChannels = channelOrder
     .map((key, index) => ({
@@ -69,6 +73,7 @@ export function renderConnections(props: ConnectionsProps) {
           slack,
           signal,
           imessage,
+          matrix,
           channelAccounts: props.snapshot?.channelAccounts ?? null,
         }),
       )}
@@ -1428,6 +1433,16 @@ function renderChannel(
           </div>
         </div>
       `;
+    }
+    case "matrix": {
+      const matrixAccounts =
+        (data.channelAccounts?.matrix as ChannelAccountSnapshot[]) ?? [];
+      return renderMatrixCard({
+        props,
+        matrix: data.matrix,
+        matrixAccounts,
+        accountCountLabel,
+      });
     }
     default:
       return nothing;

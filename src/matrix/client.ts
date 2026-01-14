@@ -6,8 +6,9 @@
 import type {
   MatrixClient,
   ICreateClientOpts,
+  SyncState,
 } from "matrix-js-sdk";
-import { ClientEvent } from "matrix-js-sdk";
+import { ClientEvent, Filter } from "matrix-js-sdk";
 import * as sdk from "matrix-js-sdk";
 import { logVerbose, shouldLogVerbose, danger } from "../globals.js";
 import type { RuntimeEnv } from "../runtime.js";
@@ -118,7 +119,9 @@ export async function loginMatrix(
   // Password-based login
   if (password && userId) {
     try {
-      const loginResponse = await client.loginWithPassword(userId, password, {
+      const loginResponse = await client.login("m.login.password", {
+        user: userId,
+        password,
         device_id: deviceId,
         initial_device_display_name: deviceDisplayName,
       });
@@ -182,7 +185,7 @@ export async function startMatrixSync(
       }
     }, initialSyncTimeout);
 
-    const syncListener = (state: MatrixSyncState, prevState: MatrixSyncState | null) => {
+    const syncListener = (state: SyncState, prevState: SyncState | null) => {
       if (shouldLogVerbose()) {
         logVerbose(`matrix: sync state ${prevState ?? "null"} -> ${state}`);
       }
@@ -207,7 +210,7 @@ export async function startMatrixSync(
     client.on(ClientEvent.Sync, syncListener);
 
     // Start sync with filter
-    client.startClient({ filter });
+    client.startClient({ filter: filter as unknown as Filter });
   });
 }
 
@@ -283,7 +286,7 @@ export async function waitForMatrixClientStop(params: {
       finish();
     };
 
-    const onSync = (state: MatrixSyncState) => {
+    const onSync = (state: SyncState) => {
       if (state === "STOPPED") {
         finish();
       } else if (state === "ERROR") {

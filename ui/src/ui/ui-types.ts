@@ -154,6 +154,16 @@ export type IMessageForm = {
   mediaMaxMb: string;
 };
 
+export type MatrixForm = {
+  enabled: boolean;
+  homeserver: string;
+  userId: string;
+  accessToken: string;
+  dmEnabled: boolean;
+  allowFrom: string;
+  mediaMaxMb: string;
+};
+
 export type CronFormState = {
   name: string;
   description: string;

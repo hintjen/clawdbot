@@ -205,6 +205,31 @@ export type MSTeamsStatus = {
   lastProbeAt?: number | null;
 };
 
+export type MatrixProbe = {
+  ok: boolean;
+  status?: number | null;
+  error?: string | null;
+  elapsedMs?: number | null;
+  userId?: string | null;
+  displayName?: string | null;
+  homeserver?: string | null;
+};
+
+export type MatrixStatus = {
+  configured: boolean;
+  homeserver?: string | null;
+  userId?: string | null;
+  tokenSource?: string | null;
+  running: boolean;
+  connected: boolean;
+  lastStartAt?: number | null;
+  lastStopAt?: number | null;
+  lastConnectedAt?: number | null;
+  lastError?: string | null;
+  probe?: MatrixProbe | null;
+  lastProbeAt?: number | null;
+};
+
 export type ConfigSnapshotIssue = {
   path: string;
   message: string;

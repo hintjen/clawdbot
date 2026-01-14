@@ -3,6 +3,7 @@ import type {
   ChannelsStatusSnapshot,
   DiscordStatus,
   IMessageStatus,
+  MatrixStatus,
   SignalStatus,
   SlackStatus,
   TelegramStatus,
@@ -11,6 +12,7 @@ import type {
 import type {
   DiscordForm,
   IMessageForm,
+  MatrixForm,
   SignalForm,
   SlackForm,
   TelegramForm,
@@ -22,7 +24,8 @@ export type ChannelKey =
   | "discord"
   | "slack"
   | "signal"
-  | "imessage";
+  | "imessage"
+  | "matrix";
 
 export type ConnectionsProps = {
   connected: boolean;
@@ -53,6 +56,10 @@ export type ConnectionsProps = {
   imessageForm: IMessageForm;
   imessageSaving: boolean;
   imessageStatus: string | null;
+  matrixForm: MatrixForm;
+  matrixTokenLocked: boolean;
+  matrixSaving: boolean;
+  matrixStatus: string | null;
   onRefresh: (probe: boolean) => void;
   onWhatsAppStart: (force: boolean) => void;
   onWhatsAppWait: () => void;
@@ -67,6 +74,8 @@ export type ConnectionsProps = {
   onSignalSave: () => void;
   onIMessageChange: (patch: Partial<IMessageForm>) => void;
   onIMessageSave: () => void;
+  onMatrixChange: (patch: Partial<MatrixForm>) => void;
+  onMatrixSave: () => void;
 };
 
 export type ConnectionsChannelData = {
@@ -76,6 +85,7 @@ export type ConnectionsChannelData = {
   slack?: SlackStatus | null;
   signal?: SignalStatus | null;
   imessage?: IMessageStatus | null;
+  matrix?: MatrixStatus | null;
   channelAccounts?: Record<string, ChannelAccountSnapshot[]> | null;
 };
 

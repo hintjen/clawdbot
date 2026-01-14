@@ -45,6 +45,7 @@ import {
   type CronFormState,
   type DiscordForm,
   type IMessageForm,
+  type MatrixForm,
   type SlackForm,
   type SignalForm,
   type TelegramForm,
@@ -67,6 +68,7 @@ import {
   logoutWhatsApp,
   saveDiscordConfig,
   saveIMessageConfig,
+  saveMatrixConfig,
   saveSlackConfig,
   saveSignalConfig,
   saveTelegramConfig,
@@ -340,6 +342,18 @@ export class ClawdbotApp extends LitElement {
   };
   @state() imessageSaving = false;
   @state() imessageConfigStatus: string | null = null;
+  @state() matrixForm: MatrixForm = {
+    enabled: true,
+    homeserver: "",
+    userId: "",
+    accessToken: "",
+    dmEnabled: true,
+    allowFrom: "",
+    mediaMaxMb: "",
+  };
+  @state() matrixSaving = false;
+  @state() matrixTokenLocked = false;
+  @state() matrixConfigStatus: string | null = null;
 
   @state() presenceLoading = false;
   @state() presenceEntries: PresenceEntry[] = [];
@@ -1186,6 +1200,12 @@ export class ClawdbotApp extends LitElement {
 
   async handleIMessageSave() {
     await saveIMessageConfig(this);
+    await loadConfig(this);
+    await loadChannels(this, true);
+  }
+
+  async handleMatrixSave() {
+    await saveMatrixConfig(this);
     await loadConfig(this);
     await loadChannels(this, true);
   }
