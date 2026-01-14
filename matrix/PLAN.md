@@ -621,3 +621,131 @@ export function handleMatrixTypingEvent(event: any, context: MatrixMonitorContex
 ```typescript
 export { sendMatrixTyping, stopMatrixTyping } from "./typing.js";
 ```
+
+---
+
+## Concurrency Architecture
+
+### How Multiple Conversations Run Concurrently
+
+The Matrix provider enables concurrent LLM conversations through Clawdbot's async architecture:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                     Matrix Event Loop (matrix-js-sdk)               │
+│                                                                     │
+│   Event 1 ──┬──► Event Handler (async) ──► Route to Session A ──┐  │
+│   Event 2 ──┤                                                    │  │
+│   Event 3 ──┴──► Event Handler (async) ──► Route to Session B ──┤  │
+│                                                                  │  │
+│              ▼ Non-blocking dispatch                             │  │
+└──────────────────────────────────────────────────────────────────┼──┘
+                                                                   │
+┌──────────────────────────────────────────────────────────────────┼──┐
+│                     Session Layer (per sessionKey)               │  │
+│                                                                  ▼  │
+│   Session A ─────► Agent Runner A ─────► LLM API Call ─────►    │  │
+│   (user1:room1)    (async, non-blocking)                        │  │
+│                                                                  │  │
+│   Session B ─────► Agent Runner B ─────► LLM API Call ─────►    │  │
+│   (user2:room2)    (async, non-blocking)                        │  │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Key Design Principles
+
+1. **Non-blocking Event Handlers**
+   ```typescript
+   // ✅ Correct: dispatch and return immediately
+   client.on("Room.timeline", async (event) => {
+     const route = resolveAgentRoute({ ... });
+     // Fire-and-forget to agent runner
+     runAgentReply({ sessionKey: route.sessionKey, ... })
+       .catch(err => runtime.error("agent error", err));
+   });
+   ```
+
+2. **Session Isolation**
+   - Each `sessionKey` maps to an independent session
+   - Sessions maintain their own conversation history
+   - No mutex/lock between different sessions
+
+3. **Provider is Stateless for Routing**
+   - Provider receives events, routes to sessions, returns
+   - Provider does NOT await LLM completion
+   - Response delivery happens via callback from agent runner
+
+4. **Inbound Queue (per session)**
+   - If messages arrive faster than LLM can respond, they queue
+   - Queue settings: dedupe mode, drop policy, max depth
+   - Prevents duplicate processing of same message
+
+### Implementation Checklist
+
+**File:** `src/matrix/monitor/events/messages.ts`
+
+- [ ] Event handler must be `async` but NOT await LLM response
+- [ ] Call `routeToSession()` or equivalent without awaiting reply
+- [ ] Handle errors with `.catch()` to prevent unhandled rejections
+
+**File:** `src/matrix/monitor/context.ts`
+
+- [ ] Store reference to `runAgentReply` or dispatch function
+- [ ] No shared mutable state between concurrent handlers
+
+**File:** `src/matrix/send.ts`
+
+- [ ] Called by agent runner when response ready (callback pattern)
+- [ ] Must handle concurrent sends to different rooms
+
+### Concurrency-Safe Patterns
+
+```typescript
+// Matrix monitor context - no blocking shared state
+interface MatrixMonitorContext {
+  client: MatrixClient;           // Thread-safe
+  accountId: string;              // Immutable
+  config: MatrixAccountConfig;    // Immutable
+  runtime: RuntimeEnv;            // Thread-safe logger
+  dispatchToAgent: (opts: AgentDispatchOpts) => void;  // Non-blocking
+}
+
+// Event handler pattern
+async function handleRoomMessage(
+  event: MatrixEvent,
+  room: Room,
+  ctx: MatrixMonitorContext
+) {
+  // 1. Extract message (sync, fast)
+  const msg = extractMessageContent(event);
+  
+  // 2. Check allowFrom (sync, fast)
+  if (!isAllowed(event.getSender(), ctx.config)) return;
+  
+  // 3. Build session key (sync, fast)
+  const route = resolveAgentRoute({ ... });
+  
+  // 4. Send typing indicator (fire-and-forget)
+  sendMatrixTyping({ client: ctx.client, roomId: room.roomId })
+    .catch(() => {});
+  
+  // 5. Dispatch to agent (NON-BLOCKING)
+  ctx.dispatchToAgent({
+    sessionKey: route.sessionKey,
+    message: msg,
+    replyTo: event.getId(),
+  });
+  
+  // 6. Return immediately - don't wait for LLM
+}
+```
+
+### Summary
+
+| Aspect | How Concurrency Works |
+|--------|----------------------|
+| Event reception | matrix-js-sdk event loop (single-threaded, async) |
+| Session routing | Sync lookup, immediate dispatch |
+| LLM calls | Per-session agent runners (concurrent, non-blocking) |
+| Response delivery | Callback from agent → `sendMessageMatrix()` |
+| Typing indicators | Fire-and-forget, no blocking |
