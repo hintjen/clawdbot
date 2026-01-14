@@ -247,7 +247,7 @@
 - [x] Create `src/matrix/token.test.ts`
 
 ### P2.2: Unit Tests - Actions
-- [ ] Create `src/matrix/actions.test.ts` - action function tests
+- [x] Create `src/matrix/actions.test.ts` - action function tests
 
 ### P2.3: Unit Tests - Monitor
 - [ ] Create `src/matrix/monitor/allow-list.test.ts` - allowFrom filtering
@@ -387,6 +387,7 @@
 - [x] P2.1: Create `src/matrix/accounts.test.ts` with unit tests for listMatrixAccountIds, resolveDefaultMatrixAccountId, resolveMatrixAccount, listEnabledMatrixAccounts (25 tests).
 - [x] P2.1: Create `src/matrix/format.test.ts` with unit tests for markdownToMatrixHtml, matrixHtmlToPlaintext, formatMatrixReply, extractMatrixMentions, containsMatrixMention (68 tests).
 - [x] P2.1: Create `src/matrix/token.test.ts` with unit tests for normalizeMatrixCredential, normalizeMatrixAccessToken, normalizeMatrixPassword, resolveMatrixCredentials (41 tests).
+- [x] P2.2: Create `src/matrix/actions.test.ts` with unit tests for normalizeEmoji, reactions (add/remove/removeOwn/list), messages (edit/delete/read), room management (join/leave/invite), user/room info, read receipts, client management (44 tests).
 
 ---
 
